@@ -1,0 +1,21 @@
+# ============================================================
+# AP Physics 专项练习系统 · NPC 协作适配配置
+# 仓库：dongdongxiaozu/yutoujing/yutouzhuanyong（子组织下）
+#
+# 适配背景（Issue #2）：
+#   本仓库位于子组织 dongdongxiaozu/yutoujing 下（3 级路径），
+#   需确保 NPC（来自根组织或子组织其他 NPC 仓库）被 @ 触发时
+#   能正确检索本仓库及关联仓库的知识库内容。
+#
+# 策略：
+#   1. imports 引入本组织下（含子组织）的 NPC/知识库仓库
+#   2. 通过知识库共享，使 NPC 协作角色在本仓库中有完整上下文
+# ============================================================
+
+npc:
+  imports:
+    list:
+      # 子组织 NPC 承接仓库（从根组织迁移的架构师团队）
+      - dongdongxiaozu/yutoujing/chengjiedaima
+      # 根组织架构师团队原始仓库
+      - dongdongxiaozu/dongjiagoushi
