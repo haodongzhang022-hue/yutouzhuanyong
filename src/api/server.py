@@ -14,6 +14,8 @@ from flask import Flask, jsonify, request
 
 from src.models.database import Database
 from src.services.fetch_service import FetchService
+from src.services.practice.service import PracticeService
+from src.services.paper_builder import rebuild_papers as _rb
 from src.core.metrics import metrics
 from src.core.log import get_logger, new_request_id, set_request_id
 
@@ -48,10 +50,12 @@ def _db_healthy(db) -> bool:
         return False
 
 
-def create_app(db: Database = None, fetch_service: FetchService = None) -> Flask:
+def create_app(db: Database = None, fetch_service: FetchService = None,
+               practice_service: PracticeService = None) -> Flask:
     """工厂：注入依赖，构造独立 Flask 应用。"""
     db = db or Database()
     fetch_service = fetch_service or FetchService(db=db)
+    practice_service = practice_service or PracticeService(db=db)
     app = Flask(__name__)
 
     # ---- 统一错误处理 ----
@@ -204,6 +208,115 @@ def create_app(db: Database = None, fetch_service: FetchService = None) -> Flask
         limit = min(int(request.args.get('limit', 20)), 100)
         logs = db.get_fetch_logs(limit=limit)
         return jsonify({"code": 0, "data": logs})
+
+
+    # ================= V2 M4：练习闭环 =================
+    @app.route('/api/practice/session', methods=['POST'])
+    def open_practice():
+        body = request.get_json(silent=True) or {}
+        user_key = (body.get('user_key') or 'anonymous').strip()
+        exam = _normalize_exam_type(body.get('exam_type', ''))
+        try:
+            data = practice_service.open_session(
+                user_key, exam_type=exam,
+                kp_code=body.get('kp_code'),
+                qtype=body.get('type'),
+                difficulty=body.get('difficulty'),
+                count=body.get('count', 5),
+                exclude_ids=body.get('exclude_ids'))
+            metrics.inc("practice_sessions_total", exam=str(exam or "all"))
+            return jsonify({"code": 0, "data": data})
+        except Exception as e:  # noqa: BLE001
+            logger.error("开练习会话失败: %s", e)
+            return jsonify({"code": 1,
+                            "message": f"开练习会话失败: {e}"}), 400
+
+    @app.route('/api/practice/session/<sid>/submit', methods=['POST'])
+    def submit_practice(sid):
+        body = request.get_json(silent=True) or {}
+        user_key = (body.get('user_key') or 'anonymous').strip()
+        answers = body.get('answers') or []
+        if not answers:
+            return jsonify({"code": 4001,
+                            "message": "answers 不能为空"}), 400
+        try:
+            data = practice_service.submit(sid, user_key, answers,
+                                           response_ms=body.get('response_ms'))
+            for r in data["results"]:
+                metrics.inc("practice_attempts_total",
+                            exam="", is_correct=str(r["correct"]).lower())
+            return jsonify({"code": 0, "data": data})
+        except Exception as e:  # noqa: BLE001
+            logger.error("提交判分失败: %s", e)
+            return jsonify({"code": 1, "message": f"提交失败: {e}"}), 400
+
+    @app.route('/api/practice/mistakes', methods=['GET'])
+    def practice_mistakes():
+        user_key = (request.args.get('user_key') or 'anonymous').strip()
+        exam = _normalize_exam_type(request.args.get('exam_type', ''))
+        only_pending = request.args.get('pending', 'true').lower() != 'false'
+        data = practice_service.list_mistakes(user_key, exam_type=exam,
+                                              only_pending=only_pending)
+        return jsonify({"code": 0, "data": data})
+
+    @app.route('/api/practice/mistakes/<int:qid>/review', methods=['POST'])
+    def review_mistake(qid):
+        body = request.get_json(silent=True) or {}
+        user_key = (body.get('user_key') or 'anonymous').strip()
+        mastered = bool(body.get('mastered', True))
+        practice_service.review_mistake(user_key, qid, mastered=mastered)
+        return jsonify({"code": 0, "message": "已标记复习"})
+
+    @app.route('/api/practice/stats', methods=['GET'])
+    def practice_stats():
+        user_key = (request.args.get('user_key') or 'anonymous').strip()
+        return jsonify({"code": 0,
+                        "data": practice_service.stats(user_key)})
+
+    # ---- 学习计划 ----
+    @app.route('/api/study/plans', methods=['GET'])
+    def list_plans():
+        user_key = (request.args.get('user_key') or 'anonymous').strip()
+        return jsonify({"code": 0, "data": practice_service.list_plans(user_key)})
+
+    @app.route('/api/study/plans', methods=['POST'])
+    def create_plan():
+        body = request.get_json(silent=True) or {}
+        user_key = (body.get('user_key') or 'anonymous').strip()
+        if not body.get('exam_type'):
+            return jsonify({"code": 4001,
+                            "message": "exam_type 必填"}), 400
+        exam = _normalize_exam_type(body['exam_type'])
+        data = practice_service.create_plan(
+            user_key, exam, kp_code=body.get('kp_code'),
+            difficulty=body.get('difficulty'),
+            daily_target=body.get('daily_target', 5))
+        return jsonify({"code": 0, "data": data})
+
+    @app.route('/api/study/plans/<int:plan_id>', methods=['DELETE'])
+    def toggle_plan(plan_id):
+        user_key = (request.args.get('user_key') or 'anonymous').strip()
+        data = practice_service.toggle_plan(user_key, plan_id, enabled=False)
+        return jsonify({"code": 0, "data": data})
+
+    # ================= V2 M3：专项卷重建 =================
+    @app.route('/api/rebuild/papers', methods=['POST'])
+    def rebuild_papers_ep():
+        body = request.get_json(silent=True) or {}
+        exam = _normalize_exam_type(body.get('exam_type', '')) or None
+        exams = [exam] if exam else None
+        data = _rb(exams=exams, db=db)
+        return jsonify({"code": 0, "message": "专项卷已重建",
+                        "data": data["rebuilt"]})
+
+    # ================= V2 M3：卷构建登记读取 =================
+    @app.route('/api/papers/runs', methods=['GET'])
+    def paper_runs():
+        exam = _normalize_exam_type(request.args.get('exam_type', '')) or None
+        limit = min(int(request.args.get('limit', 10)), 50)
+        return jsonify({"code": 0,
+                        "data": db.latest_paper_runs(exam_type=exam,
+                                                     limit=limit)})
 
     return app
 

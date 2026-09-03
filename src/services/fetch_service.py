@@ -18,10 +18,13 @@ FULL_FETCH_COUNT = 9999
 class FetchService:
     """题目抓取编排服务"""
 
-    def __init__(self, db: Database = None, config: dict = None):
+    def __init__(self, db: Database = None, config: dict = None,
+                 rebuild: bool = True):
         self.db = db or Database()
         self.config = config or self._load_default_config()
         self._collectors = {}
+        # M3：采集到新题后自动增量重建受影响专项卷（默认开启）
+        self.rebuild = rebuild
 
     def _load_default_config(self) -> dict:
         """加载默认配置"""
@@ -54,6 +57,22 @@ class FetchService:
 
         self._collectors[exam_type] = collectors
         return collectors
+
+    # ---------- V2 M3：采集后增量重建受影响专项卷 ----------
+    def _maybe_rebuild(self, exam_type: str, new_count: int) -> None:
+        """有新题时刷新对应考试的专项卷并登记 paper_run。"""
+        if not self.rebuild or new_count <= 0:
+            return
+        try:
+            from src.services.paper_builder import organize_exam
+            from src.organization.kp_catalog import KnowledgePointCatalog
+            catalog = KnowledgePointCatalog()
+            res = organize_exam(exam_type, catalog, db=self.db,
+                                trigger="incremental", version="auto")
+            logger.info("采集新题后重建 [%s] 专项卷: %s 份",
+                        exam_type, res["papers"])
+        except Exception as e:  # noqa: BLE001
+            logger.warning("采集后专项卷重建失败 [%s]: %s", exam_type, e)
 
     def fetch_daily(self, exam_types: List[str] = None,
                     daily_count: int = None) -> Dict:
@@ -107,6 +126,7 @@ class FetchService:
                               f"新增{total_new}道")
 
             results[exam_type] = exam_result
+            self._maybe_rebuild(exam_type, total_new)
 
         return results
 
@@ -137,6 +157,7 @@ class FetchService:
                               total_fetched,
                               'success' if total_fetched else 'failed',
                               f"全量初始化，新增{total_new}道")
+            self._maybe_rebuild(exam_type, total_new)
 
         return results
 

@@ -1,7 +1,9 @@
-# Physics Bowl D1 · 专项练习 · 功能与功率 Work Energy and Power
+# Physics Bowl D1 · 专项练习 · 功、能与功率 Work Energy and Power
 
 > **模块**：力学｜**知识点**：`KP03`｜**题量**：2
 > **题型**：单选｜**难度分布**：hard:1/medium:1
+> **建议用时**：约 10 分钟
+
 ---
 
 ## 一、单选题（共 2 题）
@@ -25,4 +27,3 @@
 - D. 50 J
 
 ---
-

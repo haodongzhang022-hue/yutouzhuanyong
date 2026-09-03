@@ -7,6 +7,7 @@ from datetime import datetime, date
 from typing import List, Dict, Optional
 
 from src.paths import DEFAULT_DB_PATH
+from src.models import migrations as _migrations
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +60,8 @@ class Database:
                 created_at TEXT DEFAULT (datetime('now', 'localtime'))
             );
             """)
+        # V2：schema 迁移到最新版本（v0/v1 -> v2，加 kp/norm 派生列与练习表）
+        _migrations.run_migrations(self._get_conn())
         logger.info("数据库初始化完成: %s", self.db_path)
 
     # ---------- 题目操作 ----------
@@ -249,3 +252,175 @@ class Database:
         with self._get_conn() as conn:
             rows = conn.execute(f"PRAGMA table_info({table})").fetchall()
         return {r["name"] for r in rows}
+
+    # =====================================================================
+    # V2：M4 练习闭环 数据访问（practice_attempts / mistakes / study_plans）
+    # =====================================================================
+
+    # ---------- 作答会话与判分 ----------
+    def save_attempt(self, session_id: str, user_key: str, question_id: int,
+                     user_answer: str, is_correct: bool,
+                     response_ms: int = None) -> int:
+        """记录一次作答，返回 attempt id。"""
+        with self._get_conn() as conn:
+            cur = conn.execute(
+                """INSERT INTO practice_attempts
+                   (session_id, user_key, question_id, user_answer,
+                    is_correct, response_ms)
+                   VALUES (?,?,?,?,?,?)""",
+                (session_id, user_key, question_id, user_answer,
+                 1 if is_correct else 0, response_ms))
+            return cur.lastrowid
+
+    def get_attempts_by_session(self, session_id: str) -> List[Dict]:
+        with self._get_conn() as conn:
+            rows = conn.execute(
+                "SELECT * FROM practice_attempts WHERE session_id=? ORDER BY id",
+                (session_id,)).fetchall()
+        return [dict(r) for r in rows]
+
+    # ---------- 错题本 ----------
+    def add_mistake(self, user_key: str, question_id: int) -> bool:
+        """收录错题（存在则跳过）。返回是否新增。"""
+        try:
+            with self._get_conn() as conn:
+                conn.execute(
+                    "INSERT OR IGNORE INTO mistakes(user_key, question_id)"
+                    " VALUES (?,?)", (user_key, question_id))
+                return conn.total_changes > 0
+        except Exception as e:  # noqa: BLE001
+            logger.error("收录错题失败: %s", e)
+            return False
+
+    def list_mistakes(self, user_key: str, exam_type: str = None,
+                      mastered: int = None) -> List[Dict]:
+        """错题本（join questions 取题详情）。"""
+        sql = ("SELECT m.*, q.exam_type, q.question_text, q.options, "
+               "q.correct_answer, q.explanation, q.kp_code, q.difficulty "
+               "FROM mistakes m JOIN questions q ON q.id=m.question_id "
+               "WHERE m.user_key=?")
+        params = [user_key]
+        if exam_type:
+            sql += " AND q.exam_type=?"
+            params.append(exam_type)
+        if mastered is not None:
+            sql += " AND m.mastered=?"
+            params.append(mastered)
+        sql += " ORDER BY m.added_at DESC"
+        with self._get_conn() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        out = []
+        for r in rows:
+            d = dict(r)
+            try:
+                d['options'] = json.loads(d['options']) if d.get('options') else []
+            except (json.JSONDecodeError, TypeError):
+                d['options'] = []
+            out.append(d)
+        return out
+
+    def update_mistake_review(self, user_key: str, question_id: int,
+                              mastered: bool = None,
+                              review_inc: bool = True) -> None:
+        with self._get_conn() as conn:
+            if mastered is not None:
+                conn.execute(
+                    "UPDATE mistakes SET mastered=?, review_count=review_count+1 "
+                    "WHERE user_key=? AND question_id=?",
+                    (1 if mastered else 0, user_key, question_id))
+            elif review_inc:
+                conn.execute(
+                    "UPDATE mistakes SET review_count=review_count+1 "
+                    "WHERE user_key=? AND question_id=?",
+                    (user_key, question_id))
+
+    def count_mistakes(self, user_key: str, mastered: int = None) -> int:
+        sql = "SELECT COUNT(*) c FROM mistakes WHERE user_key=?"
+        params = [user_key]
+        if mastered is not None:
+            sql += " AND mastered=?"
+            params.append(mastered)
+        with self._get_conn() as conn:
+            return conn.execute(sql, params).fetchone()["c"]
+
+    # ---------- 进度统计 ----------
+    def stats_for_user(self, user_key: str) -> Dict:
+        """用户作答统计：正确率 / 每题 / 错题数 / 最近连续打卡。"""
+        with self._get_conn() as conn:
+            total = conn.execute(
+                "SELECT COUNT(*) c FROM practice_attempts WHERE user_key=?",
+                (user_key,)).fetchone()["c"]
+            correct = conn.execute(
+                "SELECT COUNT(*) c FROM practice_attempts "
+                "WHERE user_key=? AND is_correct=1", (user_key,)).fetchone()["c"]
+            # 按 exam 分布
+            by_exam_rows = conn.execute(
+                "SELECT q.exam_type e, COUNT(*) c FROM practice_attempts a "
+                "JOIN questions q ON q.id=a.question_id WHERE a.user_key=? "
+                "GROUP BY q.exam_type", (user_key,)).fetchall()
+            # 覆盖知识点数（答过题的知识点）
+            kp_rows = conn.execute(
+                "SELECT DISTINCT q.kp_code FROM practice_attempts a "
+                "JOIN questions q ON q.id=a.question_id "
+                "WHERE a.user_key=? AND q.kp_code IS NOT NULL",
+                (user_key,)).fetchall()
+        by_exam = {r["e"]: r["c"] for r in by_exam_rows}
+        mistakes_total = self.count_mistakes(user_key)
+        return {
+            "total_attempts": total,
+            "correct_attempts": correct,
+            "accuracy": round(correct / total, 4) if total else 0.0,
+            "by_exam": by_exam,
+            "mistakes_pending": self.count_mistakes(user_key, mastered=0),
+            "mistakes_total": mistakes_total,
+            "kp_covered": [r["kp_code"] for r in kp_rows],
+        }
+
+    # ---------- 学习计划 ----------
+    def create_plan(self, user_key: str, exam_type: str, kp_code: str = None,
+                    difficulty: str = None, daily_target: int = 5) -> int:
+        with self._get_conn() as conn:
+            cur = conn.execute(
+                """INSERT INTO study_plans
+                   (user_key, exam_type, kp_code, difficulty, daily_target)
+                   VALUES (?,?,?,?,?)""",
+                (user_key, exam_type, kp_code, difficulty, daily_target))
+            return cur.lastrowid
+
+    def list_plans(self, user_key: str) -> List[Dict]:
+        with self._get_conn() as conn:
+            rows = conn.execute(
+                "SELECT * FROM study_plans WHERE user_key=? "
+                "AND enabled=1 ORDER BY created_at DESC", (user_key,)).fetchall()
+        return [dict(r) for r in rows]
+
+    def set_plan_enabled(self, user_key: str, plan_id: int, enabled: bool) -> bool:
+        with self._get_conn() as conn:
+            cur = conn.execute(
+                "UPDATE study_plans SET enabled=? WHERE id=? AND user_key=?",
+                (1 if enabled else 0, plan_id, user_key))
+            return cur.rowcount > 0
+
+    # ---------- M3：专项卷构建登记（paper_runs） ----------
+    def log_paper_run(self, exam_type: str, trigger: str = "manual",
+                      total_papers: int = 0, status: str = "success",
+                      message: str = "", version: str = None) -> int:
+        with self._get_conn() as conn:
+            cur = conn.execute(
+                """INSERT INTO paper_runs
+                   (exam_type, trigger, total_papers, status, message, version)
+                   VALUES (?,?,?,?,?,?)""",
+                (exam_type, trigger, total_papers, status, message, version))
+            return cur.lastrowid
+
+    def latest_paper_runs(self, exam_type: str = None, limit: int = 10) -> List[Dict]:
+        sql = "SELECT * FROM paper_runs"
+        params = []
+        if exam_type:
+            sql += " WHERE exam_type=?"
+            params.append(exam_type)
+        sql += " ORDER BY built_at DESC LIMIT ?"
+        params.append(limit)
+        with self._get_conn() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        return [dict(r) for r in rows]

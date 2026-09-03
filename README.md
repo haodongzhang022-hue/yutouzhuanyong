@@ -151,6 +151,57 @@ POST /api/fetch/all
 GET /api/logs?limit=20
 ```
 
+
+### 9. 练习闭环（V2 · 作答会话 / 判分 / 错题本）
+
+```http
+# 开一个作答会话（下发题干，隐藏答案）
+POST /api/practice/session
+Content-Type: application/json
+{"user_key":"u1","exam_type":"ap_physics_1","kp_code":"KP01",
+ "type":"mc","difficulty":"medium","count":5}
+→ data:{ session_id, count, questions:[{question_id, question_text, options,...}] }
+
+# 提交整卷判分（自动记录作答 + 收录错题）
+POST /api/practice/session/{session_id}/submit
+{"user_key":"u1","answers":[{"question_id":1,"user_answer":"A"}, ...]}
+→ data:{ total, correct, score, mistakes:[ids], results:[{...correct,correct_answer,explanation}] }
+
+# 错题本（默认只看未掌握）
+GET /api/practice/mistakes?user_key=u1&exam_type=&pending=true
+# 复习/掌握错题
+POST /api/practice/mistakes/{question_id}/review
+{"user_key":"u1","mastered":true}
+
+# 进度统计
+GET /api/practice/stats?user_key=u1
+→ data:{ total_attempts, correct_attempts, accuracy, by_exam, mistakes_pending, ... }
+```
+
+### 10. 学习计划（V2）
+
+```http
+GET  /api/study/plans?user_key=u1
+POST /api/study/plans
+{"user_key":"u1","exam_type":"ap_physics_1","kp_code":"KP01",
+ "difficulty":"medium","daily_target":5}
+DELETE /api/study/plans/{plan_id}?user_key=u1     # 停用计划
+```
+
+### 11. 专项卷重建与构建登记（V2）
+
+```http
+# 手动触发某考试专项卷重建（落盘 data/papers + 登记 paper_run）
+POST /api/rebuild/papers
+{"exam_type":"ap_physics_1"}
+
+# 查看专项卷构建历史
+GET /api/papers/runs?exam_type=&limit=10
+```
+
+> 采集器每抓取到**新题**会自动触发受影响考试专项卷增量重建（见 `fetch_service`），
+> 无需人工干预。
+
 ## 配置说明
 
 配置文件位于 `config/settings.yaml`：
@@ -244,15 +295,22 @@ collectors:
 │   │   └── factory.py        #   采集器工厂
 │   ├── models/
 │   │   ├── database.py       #   SQLite 数据库操作
-│   │   └── question.py       #   题目数据模型
+│   │   ├── question.py       #   题目数据模型
+│   │   └── migrations/       # ★ Schema 迁移框架（v0/v1→v2）
+│   │       ├── __init__.py         #  迁移运行器（user_version）
+│   │       └── v002_schema_v2.py   #  kp/norm列 + 练习/卷表
 │   ├── organization/        # ★ 题库组织层（新增：平铺JSON → 专项卷）
 │   │   ├── kp_catalog.py         #  知识点目录加载与 topic→kp 归并
 │   │   ├── question_normalizer.py#  题号/题型/topic 规范化
 │   │   ├── topic_index.py        #  知识点↔题↔难度 双向索引
 │   │   └── paper_renderer.py     #  题目 → 专项练习卷 Markdown 渲染
+│   ├── core/                # V2 基础框架（配置/日志/指标/生命周期）
 │   └── services/
 │       ├── fetch_service.py  #  抓取编排服务
-│       └── scheduler.py      #  每日定时调度
+│       ├── scheduler.py      #  每日定时调度
+│       ├── paper_builder.py  # ★ M3 专项卷生产+卷登记（可被API/调度调用）
+│       └── practice/         # ★ M4 练习闭环（会话/判分/错题/计划）
+│           └── service.py
 ├── scripts/
 │   ├── fetch_once.py         # 手动单次抓取
 │   └── organize_bank.py      # ★ 一键生成知识点专项练习卷
