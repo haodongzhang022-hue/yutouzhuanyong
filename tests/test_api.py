@@ -1,4 +1,4 @@
-"""API 接口测试"""
+"""API 接口测试（V2：改用 create_app 工厂注入，去模块级全局态依赖）"""
 import os
 import sys
 import tempfile
@@ -6,16 +6,15 @@ import tempfile
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from src.models.database import Database
-from src.api.server import app
+from src.api.server import create_app
 
 
 def setup_module():
-    """测试前准备：用临时数据库初始化数据"""
-    global test_db
+    """测试前准备：用临时数据库 + 工厂注入构建隔离的 app。"""
+    global test_db, app
     tmpdir = tempfile.mkdtemp()
     test_db = Database(os.path.join(tmpdir, 'api_test.db'))
 
-    # 保存几条测试题目
     for i in range(5):
         test_db.save_question({
             "exam_type": "ap_physics_1",
@@ -43,11 +42,8 @@ def setup_module():
             "explanation": f"这是题{i}的解析"
         })
 
-    # 将 app 的全局 db 替换为测试用 db
+    app = create_app(db=test_db)
     app.config['TESTING'] = True
-    # 直接替换模块级 db
-    import src.api.server as server_mod
-    server_mod.db = test_db
 
 
 def test_health():
@@ -55,6 +51,19 @@ def test_health():
     r = client.get('/api/health')
     assert r.status_code == 200
     assert r.json['status'] == 'ok'
+
+
+def test_health_live():
+    client = app.test_client()
+    r = client.get('/api/health/live')
+    assert r.status_code == 200
+    assert r.json['status'] == 'up'
+
+
+def test_health_ready():
+    client = app.test_client()
+    r = client.get('/api/health/ready')
+    assert r.status_code in (200, 503)
 
 
 def test_stats():
@@ -101,9 +110,24 @@ def test_invalid_exam_type():
 
 def test_get_single_question():
     client = app.test_client()
-    # 获取列表里的第一个题 id
     r = client.get('/api/questions?exam_type=ap_physics_1&limit=1')
     qid = r.json['data']['questions'][0]['id']
     r2 = client.get(f'/api/questions/{qid}')
     assert r2.status_code == 200
     assert r2.json['code'] == 0
+
+
+def test_papers_list():
+    """专项卷目录接口可访问（返回结构正确即可）。"""
+    client = app.test_client()
+    r = client.get('/api/papers?exam_type=ap_physics_1')
+    assert r.status_code == 200
+    assert r.json['code'] == 0
+    assert 'papers' in r.json['data']
+
+
+def test_metrics():
+    client = app.test_client()
+    r = client.get('/api/metrics')
+    assert r.status_code == 200
+    assert 'api_requests_total' in r.get_data(as_text=True)

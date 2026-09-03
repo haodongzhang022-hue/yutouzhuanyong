@@ -108,8 +108,13 @@ class Database:
 
     def get_questions(self, exam_type: str = None, limit: int = 10,
                       offset: int = 0, topic: str = None,
-                      difficulty: str = None) -> List[Dict]:
-        """查询题目列表"""
+                      difficulty: str = None,
+                      kp_code: str = None, qtype: str = None) -> List[Dict]:
+        """查询题目列表。
+
+        V2：支持按 kp_code / 题型短码(qtype) 筛选；当 questions 表存在
+        对应列时才应用筛选，保证兼容 v1 schema（见 src/core/migrations 计划）。
+        """
         sql = "SELECT * FROM questions WHERE 1=1"
         params = []
         if exam_type:
@@ -121,6 +126,13 @@ class Database:
         if difficulty:
             sql += " AND difficulty=?"
             params.append(difficulty)
+        cols = self._table_columns("questions")
+        if kp_code and "kp_code" in cols:
+            sql += " AND kp_code=?"
+            params.append(kp_code)
+        if qtype and "norm_type" in cols:
+            sql += " AND norm_type=?"
+            params.append(qtype)
         sql += " ORDER BY created_at DESC LIMIT ? OFFSET ?"
         params.extend([limit, offset])
 
@@ -231,3 +243,9 @@ class Database:
                 (limit,)
             ).fetchall()
         return [dict(r) for r in rows]
+    # ---------- V2：组织索引列支持（kp_code / type）----------
+    def _table_columns(self, table: str = "questions") -> set:
+        """返回表的现有列名集合（用于兼容 v1/v2 schema 差异）。"""
+        with self._get_conn() as conn:
+            rows = conn.execute(f"PRAGMA table_info({table})").fetchall()
+        return {r["name"] for r in rows}

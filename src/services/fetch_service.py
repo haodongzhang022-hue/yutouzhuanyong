@@ -139,3 +139,49 @@ class FetchService:
                               f"全量初始化，新增{total_new}道")
 
         return results
+
+
+    # ---------- V2：专项卷目录读取（M3/M5）----------
+
+
+    # ---------- V2：专项卷目录读取（M3/M5）----------
+    def list_papers(self, exam: str = None, kp_code: str = None) -> list:
+        """列出专项卷目录（读取 data/papers 产物文件，登记寻址）。
+
+        不依赖 DB 卷登记表（v1 无该表）；若需版本化登记表，见 v2_03。
+        文件名形如 {exam}_KP{nn}_{Name}[.answer].md，用正则稳健抽取 kp_code。
+        """
+        import os
+        import re
+        from src.paths import DATA_DIR
+
+        papers_root = os.path.join(DATA_DIR, "papers")
+        exams = [exam] if exam else ["ap_physics_1", "physics_bowl_d1"]
+        out = []
+        kp_pat = re.compile(r"KP\d+")
+        for ex in exams:
+            ex_dir = os.path.join(papers_root, ex)
+            if not os.path.isdir(ex_dir):
+                continue
+            for fn in sorted(os.listdir(ex_dir)):
+                if not fn.endswith(".md"):
+                    continue
+                if fn in ("INDEX.md",) or ".answer.md" in fn:
+                    continue  # INDEX 与解析卷跳过，题目卷已含 kp
+                m = kp_pat.search(fn)
+                if not m:
+                    continue
+                cur_kp = m.group(0)
+                if kp_code and cur_kp != kp_code:
+                    continue
+                # 名称取 kp 之后、去扩展名
+                name = fn[m.end():].replace(".md", "").strip("_")
+                out.append({
+                    "exam": ex,
+                    "kp_code": cur_kp,
+                    "name": name,
+                    "question_file": fn,
+                    "answer_file": fn[:-3] + ".answer.md",
+                    "path": os.path.join(ex, fn),
+                })
+        return out

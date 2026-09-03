@@ -16,11 +16,14 @@ case "$MODE" in
   init)
     python3 scripts/fetch_once.py
     ;;
+  rebuild)
+    python3 scripts/organize_bank.py
+    ;;
   test)
     python3 -m pytest tests/ -v
     ;;
   *)
-    echo "Usage: $0 {api|scheduler|init|test} [port]"
+    echo "Usage: $0 {api|scheduler|init|rebuild|test} [port]"
     exit 1
     ;;
 esac
