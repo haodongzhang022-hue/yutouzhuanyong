@@ -1,0 +1,387 @@
+[
+  {
+    "external_id": "app1-k001",
+    "topic": "kinematics",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A ball is thrown straight up with an initial speed of 20 m/s. Neglecting air resistance, how long does it take to reach its maximum height? (g = 10 m/s²)",
+    "options": [
+      "1 s",
+      "2 s",
+      "3 s",
+      "4 s"
+    ],
+    "correct_answer": "B",
+    "explanation": "At maximum height, v=0. Using v=v₀-gt, 0=20-10t, so t=2s."
+  },
+  {
+    "external_id": "app1-k002",
+    "topic": "dynamics",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "question_text": "A 2 kg object is pushed with a constant net force of 10 N. What is the magnitude of the object's acceleration?",
+    "options": [
+      "2 m/s²",
+      "5 m/s²",
+      "10 m/s²",
+      "20 m/s²"
+    ],
+    "correct_answer": "B",
+    "explanation": "Using Newton's 2nd law F=ma, a=F/m=10/2=5 m/s²."
+  },
+  {
+    "external_id": "app1-k003",
+    "topic": "work_energy",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A block slides down a frictionless incline of height h from rest. At the bottom, it compresses a spring of spring constant k. What is the maximum compression x of the spring?",
+    "options": [
+      "x = mgh/k",
+      "x = √(2mgh/k)",
+      "x = 2mgh/k",
+      "x = mgh/2k"
+    ],
+    "correct_answer": "B",
+    "explanation": "Energy conservation: mgh = ½kx², so x = √(2mgh/k)."
+  },
+  {
+    "external_id": "app1-m001",
+    "topic": "momentum",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "Two carts of equal mass on a frictionless track collide. Cart A moving at 4 m/s hits stationary cart B in a perfectly inelastic collision. What is their combined speed after collision?",
+    "options": [
+      "1 m/s",
+      "2 m/s",
+      "3 m/s",
+      "4 m/s"
+    ],
+    "correct_answer": "B",
+    "explanation": "Conservation of momentum: m·4 = 2m·v, so v=2 m/s."
+  },
+  {
+    "external_id": "app1-c001",
+    "topic": "circular_motion",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A car of mass 1000 kg goes around a circular track of radius 50 m at 20 m/s. What is the centripetal force required?",
+    "options": [
+      "4000 N",
+      "8000 N",
+      "10000 N",
+      "16000 N"
+    ],
+    "correct_answer": "B",
+    "explanation": "Fc = mv²/r = 1000×20²/50 = 1000×400/50 = 8000 N."
+  },
+  {
+    "external_id": "app1-e001",
+    "topic": "circuits",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "Three identical resistors of resistance R are connected in parallel. What is the equivalent resistance?",
+    "options": [
+      "3R",
+      "R/3",
+      "R/2",
+      "2R/3"
+    ],
+    "correct_answer": "B",
+    "explanation": "For n equal resistors in parallel, Req = R/n = R/3."
+  },
+  {
+    "external_id": "app1-w001",
+    "topic": "waves",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A wave has a frequency of 5 Hz and a wavelength of 0.2 m. What is the wave speed?",
+    "options": [
+      "0.04 m/s",
+      "0.5 m/s",
+      "1 m/s",
+      "25 m/s"
+    ],
+    "correct_answer": "C",
+    "explanation": "v = fλ = 5 × 0.2 = 1 m/s."
+  },
+  {
+    "external_id": "app1-r001",
+    "topic": "rotation",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A torque of 20 N·m is applied to a wheel with moment of inertia 5 kg·m². What is the angular acceleration?",
+    "options": [
+      "2 rad/s²",
+      "4 rad/s²",
+      "10 rad/s²",
+      "100 rad/s²"
+    ],
+    "correct_answer": "B",
+    "explanation": "Using τ = Iα, α = τ/I = 20/5 = 4 rad/s²."
+  },
+  {
+    "external_id": "app1-g001",
+    "topic": "gravity",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "question_text": "A satellite orbits Earth at a constant speed in a circular orbit. What is the direction of its acceleration?",
+    "options": [
+      "In the direction of motion",
+      "Opposite to its motion",
+      "Toward the center of Earth",
+      "There is no acceleration"
+    ],
+    "correct_answer": "C",
+    "explanation": "In uniform circular motion, acceleration (centripetal) points toward the center."
+  },
+  {
+    "external_id": "app1-osc001",
+    "topic": "simple_harmonic_motion",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A mass-spring system oscillates with period T. If the mass is doubled, what happens to the period?",
+    "options": [
+      "It stays the same",
+      "It increases by a factor of √2",
+      "It doubles",
+      "It halves"
+    ],
+    "correct_answer": "B",
+    "explanation": "T = 2π√(m/k). Doubling m makes T increase by √2."
+  },
+  {
+    "external_id": "app1-imp001",
+    "topic": "impulse_momentum",
+    "difficulty": "hard",
+    "question_type": "free_response",
+    "question_text": "A 0.5 kg ball is dropped from rest from a height of 2 m onto a hard floor. It rebounds to a height of 1.5 m. Calculate: (a) the impulse delivered to the ball by the floor, and (b) the average force if contact time is 0.01 s. (g = 10 m/s²)",
+    "options": [],
+    "correct_answer": "(a) J = Δp ≈ 5.4 N·s upward; (b) F_avg = J/Δt = 540 N",
+    "explanation": "v_down = √(2gh)=√40≈6.32 m/s, v_up = √(2gh')=√30≈5.48 m/s. J = m(v_up+v_down)=0.5×(6.32+5.48)=5.9 N·s."
+  },
+  {
+    "external_id": "app1-k004",
+    "topic": "kinematics",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A projectile is launched horizontally from a cliff at 15 m/s. If the cliff is 20 m high, how far from the base does it land? (g = 10 m/s², ignore air resistance)",
+    "options": [
+      "20 m",
+      "30 m",
+      "40 m",
+      "60 m"
+    ],
+    "correct_answer": "B",
+    "explanation": "Time to fall: t=√(2h/g)=√(2×20/10)=2s. Horizontal distance: x=v×t=15×2=30 m."
+  },
+  {
+    "external_id": "app1-k005",
+    "topic": "kinematics",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "An object moves with velocity v = 3t² m/s. What is its acceleration at t = 2 s?",
+    "options": [
+      "6 m/s²",
+      "12 m/s²",
+      "3 m/s²",
+      "24 m/s²"
+    ],
+    "correct_answer": "B",
+    "explanation": "a = dv/dt = 6t. At t=2s: a = 12 m/s²."
+  },
+  {
+    "external_id": "app1-d001",
+    "topic": "dynamics",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A 5 kg box is pulled by a horizontal force of 25 N. The coefficient of kinetic friction is 0.2. What is the acceleration? (g = 10 m/s²)",
+    "options": [
+      "3 m/s²",
+      "4 m/s²",
+      "5 m/s²",
+      "1 m/s²"
+    ],
+    "correct_answer": "A",
+    "explanation": "Friction f=μmg=0.2×5×10=10N. Net force F=25-10=15N. a=F/m=15/5=3 m/s²."
+  },
+  {
+    "external_id": "app1-d002",
+    "topic": "dynamics",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A block of mass m is on a frictionless incline at angle 30°. What is its acceleration down the incline? (g = 10 m/s²)",
+    "options": [
+      "3.3 m/s²",
+      "5 m/s²",
+      "8.7 m/s²",
+      "10 m/s²"
+    ],
+    "correct_answer": "B",
+    "explanation": "a = g·sinθ = 10×sin30° = 10×0.5 = 5 m/s²."
+  },
+  {
+    "external_id": "app1-w001b",
+    "topic": "work_energy",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A 2 kg object is moving at 6 m/s. How much work is needed to stop it?",
+    "options": [
+      "12 J",
+      "18 J",
+      "24 J",
+      "36 J"
+    ],
+    "correct_answer": "D",
+    "explanation": "Work = ΔKE = ½mv² = ½×2×36 = 36 J."
+  },
+  {
+    "external_id": "app1-w002",
+    "topic": "work_energy",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A force of 50 N is applied to push a box 3 m along the floor at an angle of 60° above the horizontal. How much work is done?",
+    "options": [
+      "50 J",
+      "75 J",
+      "129 J",
+      "150 J"
+    ],
+    "correct_answer": "B",
+    "explanation": "W = F·d·cosθ = 50×3×cos60° = 150×0.5 = 75 J."
+  },
+  {
+    "external_id": "app1-m002",
+    "topic": "momentum",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A 0.2 kg hockey puck moving at 10 m/s hits a stationary 0.3 kg puck in an elastic collision. What is the speed of the 0.2 kg puck after the collision?",
+    "options": [
+      "0 m/s",
+      "2 m/s",
+      "4 m/s",
+      "6 m/s"
+    ],
+    "correct_answer": "B",
+    "explanation": "For elastic collision with m2 at rest: v1' = (m1-m2)/(m1+m2)×v1 = (0.2-0.3)/(0.5)×10 = -2 m/s (reverse direction). Speed = 2 m/s."
+  },
+  {
+    "external_id": "app1-c002",
+    "topic": "circular_motion",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "An object of mass 0.5 kg moves in a circle of radius 2 m with a speed of 4 m/s. What is the centripetal acceleration?",
+    "options": [
+      "4 m/s²",
+      "8 m/s²",
+      "16 m/s²",
+      "32 m/s²"
+    ],
+    "correct_answer": "B",
+    "explanation": "ac = v²/r = 16/2 = 8 m/s²."
+  },
+  {
+    "external_id": "app1-c003",
+    "topic": "circular_motion",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A 1000 kg car rounds a curve of radius 50 m at 20 m/s on a level road. What is the minimum coefficient of friction needed? (g = 10 m/s²)",
+    "options": [
+      "0.4",
+      "0.6",
+      "0.8",
+      "1.0"
+    ],
+    "correct_answer": "C",
+    "explanation": "f = mv²/r = μmg → μ = v²/(rg) = 400/(50×10) = 0.8."
+  },
+  {
+    "external_id": "app1-c004",
+    "topic": "circuits",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "question_text": "A resistor has a voltage of 12 V across it and a current of 0.5 A flows through it. What is the resistance?",
+    "options": [
+      "6 Ω",
+      "12 Ω",
+      "24 Ω",
+      "48 Ω"
+    ],
+    "correct_answer": "C",
+    "explanation": "R = V/I = 12/0.5 = 24 Ω."
+  },
+  {
+    "external_id": "app1-r002",
+    "topic": "rotation",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A wheel starts from rest and accelerates at 2 rad/s². After 5 seconds, what is its angular velocity?",
+    "options": [
+      "5 rad/s",
+      "10 rad/s",
+      "20 rad/s",
+      "25 rad/s"
+    ],
+    "correct_answer": "B",
+    "explanation": "ω = αt = 2×5 = 10 rad/s."
+  },
+  {
+    "external_id": "app1-s002",
+    "topic": "simple_harmonic_motion",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A pendulum has a length of 1 m. What is its period? (g = 10 m/s², π²≈10)",
+    "options": [
+      "1 s",
+      "2 s",
+      "3 s",
+      "4 s"
+    ],
+    "correct_answer": "B",
+    "explanation": "T = 2π√(L/g) = 2π√(1/10) ≈ 2π/π ≈ 2 s."
+  },
+  {
+    "external_id": "app1-g002",
+    "topic": "gravity",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A planet has mass M and radius R. The acceleration due to gravity at its surface is g. If the planet's radius doubles while keeping mass the same, what is the new surface gravity?",
+    "options": [
+      "g/4",
+      "g/2",
+      "2g",
+      "4g"
+    ],
+    "correct_answer": "A",
+    "explanation": "g = GM/R². If R doubles, g' = GM/(2R)² = GM/(4R²) = g/4."
+  },
+  {
+    "external_id": "app1-e002",
+    "topic": "electric_forces",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "question_text": "Two positive charges of 2 μC and 3 μC are separated by a distance of 0.1 m. What is the magnitude of the force between them? (k = 9×10⁹ N·m²/C²)",
+    "options": [
+      "5.4 N",
+      "5.4×10⁻³ N",
+      "54 N",
+      "0.54 N"
+    ],
+    "correct_answer": "A",
+    "explanation": "F = kq₁q₂/r² = 9×10⁹×2×10⁻⁶×3×10⁻⁶/0.01 = 9×10⁹×6×10⁻¹²/0.01 = 54×10⁻³/0.01 = 5.4 N."
+  },
+  {
+    "external_id": "app1-p001",
+    "topic": "power",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A machine does 5000 J of work in 20 seconds. What is its power output?",
+    "options": [
+      "100 W",
+      "250 W",
+      "500 W",
+      "1000 W"
+    ],
+    "correct_answer": "B",
+    "explanation": "P = W/t = 5000/20 = 250 W."
+  }
+]

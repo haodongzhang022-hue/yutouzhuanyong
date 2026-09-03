@@ -1,0 +1,51 @@
+# AP 物理专项练习系统配置
+
+app:
+  name: "AP Physics 专项练习系统"
+  version: "1.0.0"
+  debug: false
+  port: 8080
+  host: "0.0.0.0"
+
+database:
+  path: "data/physics_bank.db"
+  echo: false
+
+scheduler:
+  enabled: true
+  # 每天获取题目的时间 (24h)
+  daily_fetch_time: "08:00"
+  # 每次获取题量
+  daily_fetch_count: 5
+
+collectors:
+  ap_physics_1:
+    enabled: true
+    sources:
+      - name: "内置题库"
+        type: "builtin"
+        path: "data/builtin/ap_physics_1.json"
+      # 示例：接入在线 JSON API 数据源（取消注释并按需修改）
+      # - name: "在线AP题库"
+      #   type: "json_api"
+      #   url: "https://example.com/api/ap-physics-1/questions"
+      #   data_path: "questions"     # 响应中题目数组的字段路径
+      #   headers:
+      #     Authorization: "Bearer your-token"
+    per_source_limit: 5
+
+  physics_bowl_d1:
+    enabled: true
+    sources:
+      - name: "内置题库"
+        type: "builtin"
+        path: "data/builtin/physics_bowl_d1.json"
+      # - name: "在线物理碗题库"
+      #   type: "json_api"
+      #   url: "https://example.com/api/physics-bowl/questions"
+      #   data_path: "data.questions"
+    per_source_limit: 5
+
+logging:
+  level: "INFO"
+  file: "logs/app.log"

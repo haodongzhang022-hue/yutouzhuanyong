@@ -1,0 +1,347 @@
+[
+  {
+    "external_id": "pb-d1-001",
+    "topic": "kinematics",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "question_text": "A car accelerates uniformly from rest to 20 m/s in 5 seconds. What distance does it travel?",
+    "options": [
+      "20 m",
+      "40 m",
+      "50 m",
+      "100 m"
+    ],
+    "correct_answer": "C",
+    "explanation": "Using x = ½at² and a = v/t = 20/5 = 4 m/s², x = ½×4×25 = 50 m."
+  },
+  {
+    "external_id": "pb-d1-002",
+    "topic": "dynamics",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "Two forces of magnitude 6 N and 8 N act at right angles to each other on an object. What is the magnitude of the resultant force?",
+    "options": [
+      "10 N",
+      "14 N",
+      "48 N",
+      "2 N"
+    ],
+    "correct_answer": "A",
+    "explanation": "Pythagorean theorem: √(6²+8²) = √(36+64) = 10 N."
+  },
+  {
+    "external_id": "pb-d1-003",
+    "topic": "energy",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A 3 kg object is lifted vertically to a height of 4 m. How much work is done against gravity? (g = 10 m/s²)",
+    "options": [
+      "40 J",
+      "80 J",
+      "120 J",
+      "160 J"
+    ],
+    "correct_answer": "C",
+    "explanation": "W = mgh = 3 × 10 × 4 = 120 J."
+  },
+  {
+    "external_id": "pb-d1-004",
+    "topic": "fluid_mechanics",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A hydraulic lift has piston areas A₁ = 0.01 m² and A₂ = 1 m². A force of 100 N is applied to the small piston. What force is exerted by the large piston?",
+    "options": [
+      "1 N",
+      "100 N",
+      "1000 N",
+      "10000 N"
+    ],
+    "correct_answer": "D",
+    "explanation": "Pascal's principle: F₂ = F₁(A₂/A₁) = 100 × (1/0.01) = 10000 N."
+  },
+  {
+    "external_id": "pb-d1-005",
+    "topic": "electricity",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "question_text": "A circuit has a 12 V battery connected to a 4 Ω resistor. What is the current?",
+    "options": [
+      "0.33 A",
+      "3 A",
+      "8 A",
+      "48 A"
+    ],
+    "correct_answer": "B",
+    "explanation": "Ohm's law: I = V/R = 12/4 = 3 A."
+  },
+  {
+    "external_id": "pb-d1-006",
+    "topic": "waves_optics",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A concave mirror has a focal length of 10 cm. An object is placed 20 cm in front of the mirror. Where is the image formed?",
+    "options": [
+      "5 cm in front",
+      "10 cm in front",
+      "20 cm in front",
+      "20 cm behind"
+    ],
+    "correct_answer": "C",
+    "explanation": "Using mirror equation 1/f = 1/do + 1/di: 1/10 = 1/20 + 1/di → 1/di = 1/20, di = 20 cm in front (real)."
+  },
+  {
+    "external_id": "pb-d1-007",
+    "topic": "thermodynamics",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "An ideal gas is compressed adiabatically from volume 4 L to 2 L. The initial pressure is 1 atm. What is the final pressure? (γ = 1.4 for diatomic gas)",
+    "options": [
+      "1.8 atm",
+      "2 atm",
+      "2.6 atm",
+      "4 atm"
+    ],
+    "correct_answer": "C",
+    "explanation": "For adiabatic process: P₁V₁^γ = P₂V₂^γ, P₂ = P₁(V₁/V₂)^γ = 1×(4/2)^1.4 = 2^1.4 ≈ 2.64 atm."
+  },
+  {
+    "external_id": "pb-d1-008",
+    "topic": "magnetism",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A straight wire carrying 5 A current is placed in a 0.2 T magnetic field perpendicular to the wire. If the wire is 2 m long, what is the magnetic force on it?",
+    "options": [
+      "0.5 N",
+      "1 N",
+      "2 N",
+      "5 N"
+    ],
+    "correct_answer": "C",
+    "explanation": "F = BIL = 0.2 × 5 × 2 = 2 N."
+  },
+  {
+    "external_id": "pb-d1-009",
+    "topic": "modern_physics",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "The half-life of a radioactive isotope is 10 days. How much of a 100 g sample remains after 30 days?",
+    "options": [
+      "25 g",
+      "12.5 g",
+      "6.25 g",
+      "50 g"
+    ],
+    "correct_answer": "B",
+    "explanation": "After 3 half-lives (30/10=3): 100 × (½)³ = 100/8 = 12.5 g."
+  },
+  {
+    "external_id": "pb-d1-010",
+    "topic": "projectile_motion",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A projectile is launched at 30° above horizontal with speed 40 m/s. What is its maximum height? (g = 10 m/s²)",
+    "options": [
+      "10 m",
+      "20 m",
+      "30 m",
+      "40 m"
+    ],
+    "correct_answer": "B",
+    "explanation": "v_y = v·sin30° = 40×0.5 = 20 m/s. h = v_y²/(2g) = 400/20 = 20 m."
+  },
+  {
+    "external_id": "pb-d1-011",
+    "topic": "kinematics",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A ball is thrown vertically upward with speed 30 m/s. After 4 seconds, what is its displacement? (g = 10 m/s²)",
+    "options": [
+      "20 m up",
+      "40 m up",
+      "40 m down",
+      "80 m up"
+    ],
+    "correct_answer": "B",
+    "explanation": "y = v₀t - ½gt² = 30×4 - ½×10×16 = 120 - 80 = 40 m upward."
+  },
+  {
+    "external_id": "pb-d1-012",
+    "topic": "force_newton",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A 4 kg object is accelerated at 3 m/s². What net force is acting on it?",
+    "options": [
+      "0.75 N",
+      "4 N",
+      "7 N",
+      "12 N"
+    ],
+    "correct_answer": "D",
+    "explanation": "F = ma = 4×3 = 12 N."
+  },
+  {
+    "external_id": "pb-d1-013",
+    "topic": "energy",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A 2 kg object moving at 5 m/s collides with a stationary object of equal mass and sticks to it. What is the kinetic energy lost in the collision?",
+    "options": [
+      "5 J",
+      "12.5 J",
+      "25 J",
+      "50 J"
+    ],
+    "correct_answer": "B",
+    "explanation": "Initial KE = ½×2×25 = 25 J. After: v' = mv/(2m) = 2.5 m/s, KE' = ½×4×6.25 = 12.5 J. Lost = 25-12.5 = 12.5 J."
+  },
+  {
+    "external_id": "pb-d1-014",
+    "topic": "gravitation",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "If the mass of the Earth doubled, what would happen to the weight of an object on its surface? (radius unchanged)",
+    "options": [
+      "Doubles",
+      "Quadruples",
+      "Halves",
+      "Unchanged"
+    ],
+    "correct_answer": "A",
+    "explanation": "F = GMm/R². If M doubles, F doubles."
+  },
+  {
+    "external_id": "pb-d1-015",
+    "topic": "simple_harmonic_motion",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A mass on a spring completes 20 oscillations in 10 seconds. What is its frequency?",
+    "options": [
+      "0.5 Hz",
+      "1 Hz",
+      "2 Hz",
+      "200 Hz"
+    ],
+    "correct_answer": "C",
+    "explanation": "f = 20/10 = 2 Hz."
+  },
+  {
+    "external_id": "pb-d1-016",
+    "topic": "sound",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "question_text": "Sound waves in air are what type of wave?",
+    "options": [
+      "Transverse",
+      "Longitudinal",
+      "Electromagnetic",
+      "Surface"
+    ],
+    "correct_answer": "B",
+    "explanation": "Sound travels as longitudinal (compression) waves."
+  },
+  {
+    "external_id": "pb-d1-017",
+    "topic": "optics",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "Light passes from air (n=1.0) into glass (n=1.5) at an angle of incidence of 30°. What is the angle of refraction? (sin⁻¹(0.333) ≈ 19.5°)",
+    "options": [
+      "19.5°",
+      "30°",
+      "45°",
+      "90°"
+    ],
+    "correct_answer": "A",
+    "explanation": "Snell's law: n₁sinθ₁ = n₂sinθ₂ → sinθ₂ = (1.0×sin30°)/1.5 = 0.5/1.5 = 0.333 → θ₂ ≈ 19.5°."
+  },
+  {
+    "external_id": "pb-d1-018",
+    "topic": "electric_fields",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "A charge of 4 μC is placed in an electric field of 500 N/C. What is the force on the charge?",
+    "options": [
+      "0.002 N",
+      "0.02 N",
+      "0.2 N",
+      "2 N"
+    ],
+    "correct_answer": "A",
+    "explanation": "F = qE = 4×10⁻⁶ × 500 = 2×10⁻³ = 0.002 N."
+  },
+  {
+    "external_id": "pb-d1-019",
+    "topic": "induction",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A coil has 200 turns and a magnetic flux changes from 0.05 Wb to 0.01 Wb in 0.1 seconds. What is the induced EMF?",
+    "options": [
+      "20 V",
+      "40 V",
+      "80 V",
+      "160 V"
+    ],
+    "correct_answer": "C",
+    "explanation": "ε = -NΔΦ/Δt = -200×(0.01-0.05)/0.1 = -200×(-0.04)/0.1 = 80 V."
+  },
+  {
+    "external_id": "pb-d1-020",
+    "topic": "waves",
+    "difficulty": "easy",
+    "question_type": "multiple_choice",
+    "question_text": "A wave has a frequency of 2 Hz and wavelength of 1.5 m. What is the wave speed?",
+    "options": [
+      "0.75 m/s",
+      "2 m/s",
+      "3 m/s",
+      "1.5 m/s"
+    ],
+    "correct_answer": "C",
+    "explanation": "v = fλ = 2×1.5 = 3 m/s."
+  },
+  {
+    "external_id": "pb-d1-021",
+    "topic": "atomic_physics",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "An electron in a hydrogen atom transitions from n=3 to n=2. What happens to the emitted photon energy? (Eₙ = -13.6/n² eV)",
+    "options": [
+      "1.89 eV",
+      "3.4 eV",
+      "13.6 eV",
+      "1.51 eV"
+    ],
+    "correct_answer": "A",
+    "explanation": "ΔE = E₃-E₂ = -13.6/9 - (-13.6/4) = -1.51 - (-3.4) = 1.89 eV."
+  },
+  {
+    "external_id": "pb-d1-022",
+    "topic": "thermal_energy",
+    "difficulty": "medium",
+    "question_type": "multiple_choice",
+    "question_text": "How much heat is needed to raise the temperature of 2 kg of water from 20°C to 70°C? (specific heat of water c = 4200 J/(kg·°C))",
+    "options": [
+      "210 kJ",
+      "420 kJ",
+      "588 kJ",
+      "840 kJ"
+    ],
+    "correct_answer": "B",
+    "explanation": "Q = mcΔT = 2×4200×50 = 420,000 J = 420 kJ."
+  },
+  {
+    "external_id": "pb-d1-023",
+    "topic": "waves",
+    "difficulty": "hard",
+    "question_type": "multiple_choice",
+    "question_text": "A string fixed at both ends has a fundamental frequency of 100 Hz. What is the frequency of the second harmonic?",
+    "options": [
+      "100 Hz",
+      "150 Hz",
+      "200 Hz",
+      "400 Hz"
+    ],
+    "correct_answer": "C",
+    "explanation": "Second harmonic = 2× fundamental = 2×100 = 200 Hz."
+  }
+]
