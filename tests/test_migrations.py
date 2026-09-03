@@ -32,10 +32,24 @@ def test_practice_tables_created():
         assert t in tabs, f"缺表 {t}"
 
 
-def test_user_version_is_v2():
+def test_user_version_is_latest():
+    # v003 将 schema 推进到 3（真题溯源列 + 导入登记表）
+    from src.models.migrations import SCHEMA_VERSION
     db = _fresh_db()
     assert db._get_conn().execute(
-        "PRAGMA user_version").fetchone()[0] == 2
+        "PRAGMA user_version").fetchone()[0] == SCHEMA_VERSION == 3
+
+
+def test_schema_v3_realexam_columns_present():
+    db = _fresh_db()
+    conn = db._get_conn()
+    cols = {r['name'] for r in conn.execute(
+        "PRAGMA table_info(questions)").fetchall()}
+    for col in ("is_real", "exam_year", "paper", "q_no", "points"):
+        assert col in cols, f"缺真题溯源列 {col}"
+    tabs = {r['name'] for r in conn.execute(
+        "SELECT name FROM sqlite_master WHERE type='table'").fetchall()}
+    assert "realexam_imports" in tabs, "缺真题导入登记表"
 
 
 def test_migration_idempotent():

@@ -24,7 +24,12 @@
           ],
           "answer": "B",
           "explanation": "At maximum height, v=0. Using v=v₀-gt, 0=20-10t, so t=2s.",
-          "source_ref": "app1-k001"
+          "source_ref": "app1-k001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP01-Q02",
@@ -42,7 +47,12 @@
           ],
           "answer": "B",
           "explanation": "Time to fall: t=√(2h/g)=√(2×20/10)=2s. Horizontal distance: x=v×t=15×2=30 m.",
-          "source_ref": "app1-k004"
+          "source_ref": "app1-k004",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP01-Q03",
@@ -60,7 +70,12 @@
           ],
           "answer": "B",
           "explanation": "a = dv/dt = 6t. At t=2s: a = 12 m/s².",
-          "source_ref": "app1-k005"
+          "source_ref": "app1-k005",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -87,7 +102,12 @@
           ],
           "answer": "B",
           "explanation": "Using Newton's 2nd law F=ma, a=F/m=10/2=5 m/s².",
-          "source_ref": "app1-k002"
+          "source_ref": "app1-k002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP02-Q02",
@@ -105,7 +125,12 @@
           ],
           "answer": "A",
           "explanation": "Friction f=μmg=0.2×5×10=10N. Net force F=25-10=15N. a=F/m=15/5=3 m/s².",
-          "source_ref": "app1-d001"
+          "source_ref": "app1-d001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP02-Q03",
@@ -123,7 +148,12 @@
           ],
           "answer": "B",
           "explanation": "a = g·sinθ = 10×sin30° = 10×0.5 = 5 m/s².",
-          "source_ref": "app1-d002"
+          "source_ref": "app1-d002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -150,7 +180,12 @@
           ],
           "answer": "B",
           "explanation": "Energy conservation: mgh = ½kx², so x = √(2mgh/k).",
-          "source_ref": "app1-k003"
+          "source_ref": "app1-k003",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP03-Q02",
@@ -168,7 +203,12 @@
           ],
           "answer": "D",
           "explanation": "Work = ΔKE = ½mv² = ½×2×36 = 36 J.",
-          "source_ref": "app1-w001b"
+          "source_ref": "app1-w001b",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP03-Q03",
@@ -186,7 +226,12 @@
           ],
           "answer": "B",
           "explanation": "W = F·d·cosθ = 50×3×cos60° = 150×0.5 = 75 J.",
-          "source_ref": "app1-w002"
+          "source_ref": "app1-w002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP03-Q04",
@@ -204,7 +249,12 @@
           ],
           "answer": "B",
           "explanation": "P = W/t = 5000/20 = 250 W.",
-          "source_ref": "app1-p001"
+          "source_ref": "app1-p001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -231,7 +281,12 @@
           ],
           "answer": "B",
           "explanation": "Conservation of momentum: m·4 = 2m·v, so v=2 m/s.",
-          "source_ref": "app1-m001"
+          "source_ref": "app1-m001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP04-Q02",
@@ -244,7 +299,12 @@
           "options": [],
           "answer": "(a) J = Δp ≈ 5.4 N·s upward; (b) F_avg = J/Δt = 540 N",
           "explanation": "v_down = √(2gh)=√40≈6.32 m/s, v_up = √(2gh')=√30≈5.48 m/s. J = m(v_up+v_down)=0.5×(6.32+5.48)=5.9 N·s.",
-          "source_ref": "app1-imp001"
+          "source_ref": "app1-imp001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP04-Q03",
@@ -262,7 +322,12 @@
           ],
           "answer": "B",
           "explanation": "For elastic collision with m2 at rest: v1' = (m1-m2)/(m1+m2)×v1 = (0.2-0.3)/(0.5)×10 = -2 m/s (reverse direction). Speed = 2 m/s.",
-          "source_ref": "app1-m002"
+          "source_ref": "app1-m002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -289,7 +354,12 @@
           ],
           "answer": "C",
           "explanation": "In uniform circular motion, acceleration (centripetal) points toward the center.",
-          "source_ref": "app1-g001"
+          "source_ref": "app1-g001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP05-Q02",
@@ -307,7 +377,12 @@
           ],
           "answer": "A",
           "explanation": "g = GM/R². If R doubles, g' = GM/(2R)² = GM/(4R²) = g/4.",
-          "source_ref": "app1-g002"
+          "source_ref": "app1-g002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -334,7 +409,12 @@
           ],
           "answer": "B",
           "explanation": "Fc = mv²/r = 1000×20²/50 = 1000×400/50 = 8000 N.",
-          "source_ref": "app1-c001"
+          "source_ref": "app1-c001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP06-Q02",
@@ -352,7 +432,12 @@
           ],
           "answer": "B",
           "explanation": "ac = v²/r = 16/2 = 8 m/s².",
-          "source_ref": "app1-c002"
+          "source_ref": "app1-c002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP06-Q03",
@@ -370,7 +455,12 @@
           ],
           "answer": "C",
           "explanation": "f = mv²/r = μmg → μ = v²/(rg) = 400/(50×10) = 0.8.",
-          "source_ref": "app1-c003"
+          "source_ref": "app1-c003",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -397,7 +487,12 @@
           ],
           "answer": "B",
           "explanation": "T = 2π√(m/k). Doubling m makes T increase by √2.",
-          "source_ref": "app1-osc001"
+          "source_ref": "app1-osc001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP07-Q02",
@@ -415,7 +510,12 @@
           ],
           "answer": "B",
           "explanation": "T = 2π√(L/g) = 2π√(1/10) ≈ 2π/π ≈ 2 s.",
-          "source_ref": "app1-s002"
+          "source_ref": "app1-s002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -442,7 +542,12 @@
           ],
           "answer": "B",
           "explanation": "Using τ = Iα, α = τ/I = 20/5 = 4 rad/s².",
-          "source_ref": "app1-r001"
+          "source_ref": "app1-r001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP08-Q02",
@@ -460,7 +565,12 @@
           ],
           "answer": "B",
           "explanation": "ω = αt = 2×5 = 10 rad/s.",
-          "source_ref": "app1-r002"
+          "source_ref": "app1-r002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -487,7 +597,12 @@
           ],
           "answer": "C",
           "explanation": "v = fλ = 5 × 0.2 = 1 m/s.",
-          "source_ref": "app1-w001"
+          "source_ref": "app1-w001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -514,7 +629,12 @@
           ],
           "answer": "B",
           "explanation": "For n equal resistors in parallel, Req = R/n = R/3.",
-          "source_ref": "app1-e001"
+          "source_ref": "app1-e001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "AP1-KP13-Q02",
@@ -532,7 +652,12 @@
           ],
           "answer": "C",
           "explanation": "R = V/I = 12/0.5 = 24 Ω.",
-          "source_ref": "app1-c004"
+          "source_ref": "app1-c004",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -559,7 +684,12 @@
           ],
           "answer": "A",
           "explanation": "F = kq₁q₂/r² = 9×10⁹×2×10⁻⁶×3×10⁻⁶/0.01 = 9×10⁹×6×10⁻¹²/0.01 = 54×10⁻³/0.01 = 5.4 N.",
-          "source_ref": "app1-e002"
+          "source_ref": "app1-e002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     }

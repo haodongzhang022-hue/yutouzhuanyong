@@ -17,6 +17,22 @@ _TYPE_TITLE = {"mc": "单选题", "fr": "解答题"}
 _CN_NUM = ["一", "二", "三", "四", "五"]
 
 
+def provenance_tag(q: Dict) -> str:
+    """生成真题来源标注：如『真题｜2018 · 卷B · 第3题 · 6分』。
+    仅当该题标记为真题且带年份时输出，练习题为空字符串。"""
+    if not (q.get("is_real") and q.get("exam_year")):
+        return ""
+    parts = [f"{q['exam_year']}"]
+    if q.get("paper"):
+        parts.append(q["paper"])
+    if q.get("q_no") is not None:
+        parts.append(f"第{q['q_no']}题")
+    if q.get("points") is not None:
+        pt = q["points"]
+        parts.append(f"{pt:g}分" if isinstance(pt, float) else f"{pt}分")
+    return f"【真题｜{' · '.join(parts)}】"
+
+
 def render_paper(
     kp_code: str,
     kp_name: str,
@@ -60,7 +76,11 @@ def render_paper(
         lines += [f"## {_CN_NUM[section - 1]}、{_TYPE_TITLE['mc']}（共 {n_mc} 题）", "",
                   "> 从 A/B/C/D 中选择唯一正确答案。", ""]
         for q in mc:
-            lines.append(f"**{seg}. {q['stem']}**")
+            tag = provenance_tag(q)
+            head = f"**{seg}. {q['stem']}**"
+            if tag:
+                head = f"**{seg}.** {tag} {q['stem']}"
+            lines.append(head)
             lines.append("")
             for li, opt in enumerate(q["options"]):
                 letter = chr(ord("A") + li)
@@ -73,7 +93,11 @@ def render_paper(
         section += 1
         lines += [f"## {_CN_NUM[section - 1]}、{_TYPE_TITLE['fr']}（共 {n_fr} 题）", ""]
         for q in fr:
-            lines.append(f"**{seg}. {q['stem']}**")
+            tag = provenance_tag(q)
+            head = f"**{seg}. {q['stem']}**"
+            if tag:
+                head = f"**{seg}.** {tag} {q['stem']}"
+            lines.append(head)
             lines.append("")
             lines.append("请写出完整解题过程：")
             lines += ["", "> 作答区：", "", "---", ""]
@@ -85,7 +109,13 @@ def render_paper(
         for i, q in enumerate(questions, start=1):
             ans = q.get("answer", "")
             expl = q.get("explanation", "")
-            lines += [f"**{i}. {q['stem']}**", "", f"- 答案：`{ans}`"]
+            src_lines = []
+            tag = provenance_tag(q)
+            if tag:
+                src_lines.append(f"- 来源：{tag}")
+            # 仅真题显示来源；练习题答案卷不附加来源，保持整洁
+            lines += [f"**{i}. {q['stem']}**", "",
+                      f"- 答案：`{ans}`"] + src_lines
             if q.get("key_points"):
                 lines.append(f"- 知识点要点：{q['key_points']}")
             lines += [f"- 解析：{expl}", ""]
@@ -103,3 +133,20 @@ def paper_filename(exam: str, kp_name_en: str, kp_code: str,
     ascii_part = "".join(c for c in ascii_part if c.isalnum() or c in "_-")
     base = f"{exam}_KP{_num(kp_code)}_{ascii_part}"
     return f"{base}.answer.md" if with_answer else f"{base}.md"
+
+
+def render_answer_sheet(questions: List[Dict]) -> str:
+    """只下载"答案"用的独立答案卡：不含题干，按卷内题号 + 真题来源对齐。"""
+    lines: List[str] = ["# 参考答案卡", "",
+                        "> 仅含答案与解析，便于对照；题号与该知识点题目卷一致。", ""]
+    for i, q in enumerate(questions, start=1):
+        tag = provenance_tag(q)
+        src = f"｜{tag}" if tag else ""
+        src_ref = q.get("source_ref")
+        src2 = f"（{src_ref}）" if src_ref and not tag else ""
+        lines += [f"### {i}. 题号 {i}{src}{src2}",
+                  f"- 答案：`{q.get('answer','')}`"]
+        if q.get("key_points"):
+            lines.append(f"- 知识点要点：{q['key_points']}")
+        lines += [f"- 解析：{q.get('explanation','')}", ""]
+    return "\n".join(lines).rstrip() + "\n"

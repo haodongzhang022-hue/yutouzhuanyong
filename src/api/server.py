@@ -318,6 +318,73 @@ def create_app(db: Database = None, fetch_service: FetchService = None,
                         "data": db.latest_paper_runs(exam_type=exam,
                                                      limit=limit)})
 
+    # ================= V3：真题溯源 / 对账 / 导入登记 =================
+    @app.route('/api/realexam/stats', methods=['GET'])
+    def realexam_stats():
+        exam = _normalize_exam_type(request.args.get('exam_type', '')) or None
+        yf = request.args.get('year_from', type=int)
+        yt = request.args.get('year_to', type=int)
+        return jsonify({"code": 0, "data": {
+            "count": db.count_realexam(exam_type=exam,
+                                       year_from=yf, year_to=yt),
+            "by_year": db.realexam_by_year(exam_type=exam),
+            "gaps": db.realexam_gaps(exam_type=exam),
+            "imports": db.latest_realexam_imports(exam_type=exam),
+        }})
+
+    @app.route('/api/realexam/imports', methods=['GET'])
+    def realexam_imports():
+        exam = _normalize_exam_type(request.args.get('exam_type', '')) or None
+        limit = min(int(request.args.get('limit', 20)), 100)
+        return jsonify({"code": 0,
+                        "data": db.latest_realexam_imports(exam_type=exam,
+                                                           limit=limit)})
+
+    # ================= V3：三种下载产物 =================
+    @app.route('/api/download', methods=['POST'])
+    def export_download():
+        body = request.get_json(silent=True) or {}
+        exam = _normalize_exam_type(body.get('exam_type', '')) or None
+        from src.organization.kp_catalog import KnowledgePointCatalog
+        from src.services.paper_export import export_exam, export_all
+        catalog = KnowledgePointCatalog()
+        if exam:
+            data = export_exam(exam, catalog, db=db)
+        else:
+            data = export_all(db=db)
+        return jsonify({"code": 0, "message": "三种下载产物已导出",
+                        "data": data})
+
+    # 读取某知识点的三种下载产物（markdown 文本）
+    @app.route('/api/download/content', methods=['GET'])
+    def download_content():
+        import os
+        import re
+        from src.paths import DATA_DIR
+        exam = _normalize_exam_type(request.args.get('exam_type', '')) or None
+        kp = request.args.get('kp_code', '')
+        kind = request.args.get('kind', '题目卷')  # 题目卷/答案卡/含答案
+        base = os.path.join(DATA_DIR, 'download')
+        if not exam:
+            return jsonify({"code": 4001, "message": "缺少 exam_type"}), 400
+        d = os.path.join(base, exam)
+        if not os.path.isdir(d):
+            return jsonify({"code": 4041, "message": "未找到下载产物，请先导出"}), 404
+        # 匹配 {exam}_KP{num}_..._{kind}.md 且 kp 前缀匹配
+        pat = re.compile(re.escape(exam) + r"_KP\d+_.*_" +
+                         re.escape(kind) + r"\.md$")
+        target = None
+        for fn in sorted(os.listdir(d)):
+            if kp and not fn.startswith(f"{exam}_{kp}"):
+                continue
+            if pat.match(fn):
+                target = fn
+                break
+        if not target:
+            return jsonify({"code": 4041, "message": "未找到匹配的下载文件"}), 404
+        with open(os.path.join(d, target), 'r', encoding='utf-8') as f:
+            return f.read(), 200, {'Content-Type': 'text/markdown; charset=utf-8'}
+
     return app
 
 

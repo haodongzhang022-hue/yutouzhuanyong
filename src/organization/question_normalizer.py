@@ -52,6 +52,12 @@ def normalize_question(
         "answer": raw.get("correct_answer", ""),
         "explanation": raw.get("explanation", ""),
         "source_ref": raw.get("external_id", ""),
+        # ---- V3 真题溯源：哪些数据可有则透传（练习题为空，真题必填）----
+        "is_real": 1 if raw.get("is_real") else 0,
+        "exam_year": raw.get("exam_year"),
+        "paper": raw.get("paper", ""),
+        "q_no": raw.get("q_no"),
+        "points": raw.get("points"),
     }
 
 

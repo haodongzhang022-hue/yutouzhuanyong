@@ -24,6 +24,12 @@ EXAM_FILES = {
     "ap_physics_1": os.path.join(BUILTIN_DIR, "ap_physics_1.json"),
     "physics_bowl_d1": os.path.join(BUILTIN_DIR, "physics_bowl_d1.json"),
 }
+# V3：真题源（data/realexam/{exam}.json）。与练习并列，按知识点归并渲染。
+REALEXAM_DIR = os.path.join(PROJECT_ROOT, "data", "realexam")
+REALEXAM_FILES = {
+    "ap_physics_1": os.path.join(REALEXAM_DIR, "ap_physics_1.json"),
+    "physics_bowl_d1": os.path.join(REALEXAM_DIR, "physics_bowl_d1.json"),
+}
 DEFAULT_OUTDIR = os.path.join(DATA_DIR, "papers")
 
 
@@ -72,12 +78,26 @@ def _write_ai_index(exam_dir, exam, grouped, catalog):
         json.dump(payload, f, ensure_ascii=False, indent=2)
 
 
+def _load_bank(exam: str) -> List[Dict]:
+    """加载该考试的原始题目：练习(data/builtin) + 真题(data/realexam)。"""
+    raw = list(json.load(open(EXAM_FILES[exam], encoding="utf-8")))
+    re_file = REALEXAM_FILES.get(exam)
+    if re_file and os.path.exists(re_file):
+        real = json.load(open(re_file, encoding="utf-8"))
+        # 真题记录强制标 is_real，缺省题号/分值给出警示字段由 renderer 兜底
+        for q in real:
+            q.setdefault("is_real", 1)
+        raw.extend(real)
+    return raw
+
+
 def organize_exam(exam: str, catalog: KnowledgePointCatalog,
                   outdir: str = DEFAULT_OUTDIR,
                   db: Optional[Database] = None,
                   trigger: str = "manual", version: str = "v2.0") -> Dict:
     """组织单个考试，产出专项卷并（可选）登记 paper_run。"""
-    raw_qs = json.load(open(EXAM_FILES[exam], encoding="utf-8"))
+    raw_qs = _load_bank(exam)
+    n_real = sum(1 for q in raw_qs if q.get("is_real"))
     kp_of, kp_name_of = {}, {}
     for q in raw_qs:
         topic = q.get("topic", "")
@@ -117,7 +137,8 @@ def organize_exam(exam: str, catalog: KnowledgePointCatalog,
     if db is not None:
         db.log_paper_run(exam, trigger=trigger, total_papers=n_papers,
                          status="success", version=version)
-    return {"exam": exam, "papers": n_papers, "questions": len(norm)}
+    return {"exam": exam, "papers": n_papers, "questions": len(norm),
+            "real_exam": n_real}
 
 
 def rebuild_papers(exams: Optional[List[str]] = None, db: Optional[Database] = None,

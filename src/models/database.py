@@ -81,8 +81,9 @@ class Database:
                 conn.execute(
                     """INSERT INTO questions
                        (exam_type, question_type, source, external_id, topic,
-                        difficulty, question_text, options, correct_answer, explanation)
-                       VALUES (?,?,?,?,?,?,?,?,?,?)""",
+                        difficulty, question_text, options, correct_answer,
+                        explanation, is_real, exam_year, paper, q_no, points)
+                       VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
                     (
                         question.get('exam_type', ''),
                         question.get('question_type', 'multiple_choice'),
@@ -93,7 +94,12 @@ class Database:
                         question.get('question_text', ''),
                         json.dumps(question.get('options', []), ensure_ascii=False),
                         question.get('correct_answer', ''),
-                        question.get('explanation', '')
+                        question.get('explanation', ''),
+                        1 if question.get('is_real') else 0,
+                        question.get('exam_year'),
+                        question.get('paper', ''),
+                        question.get('q_no'),
+                        question.get('points')
                     )
                 )
                 return True
@@ -424,3 +430,79 @@ class Database:
         with self._get_conn() as conn:
             rows = conn.execute(sql, params).fetchall()
         return [dict(r) for r in rows]
+
+    # =====================================================================
+    # V3：真题(real-exam) 溯源 辅助访问
+    # =====================================================================
+
+    # ---------- 真题导入登记（realexam_imports） ----------
+    def log_realexam_import(self, exam_type: str, batch: str,
+                            year_from: int = None, year_to: int = None,
+                            count: int = 0, status: str = "success",
+                            message: str = "") -> int:
+        with self._get_conn() as conn:
+            cur = conn.execute(
+                """INSERT INTO realexam_imports
+                   (exam_type, batch, year_from, year_to, count, status, message)
+                   VALUES (?,?,?,?,?,?,?)""",
+                (exam_type, batch, year_from, year_to, count, status, message))
+            return cur.lastrowid
+
+    def latest_realexam_imports(self, exam_type: str = None,
+                                limit: int = 10) -> List[Dict]:
+        sql = "SELECT * FROM realexam_imports"
+        params = []
+        if exam_type:
+            sql += " WHERE exam_type=?"
+            params.append(exam_type)
+        sql += " ORDER BY created_at DESC LIMIT ?"
+        params.append(limit)
+        with self._get_conn() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        return [dict(r) for r in rows]
+
+    # ---------- 真题统计 / 溯源缺口审计 ----------
+    def count_realexam(self, exam_type: str = None,
+                       year_from: int = None, year_to: int = None) -> int:
+        """真题数量（可按年份区间过滤），用于"全量不漏"对账。"""
+        sql = ("SELECT COUNT(*) c FROM questions "
+               "WHERE is_real=1")
+        params = []
+        if exam_type:
+            sql += " AND exam_type=?"
+            params.append(exam_type)
+        if year_from is not None:
+            sql += " AND exam_year>=?"
+            params.append(year_from)
+        if year_to is not None:
+            sql += " AND exam_year<=?"
+            params.append(year_to)
+        with self._get_conn() as conn:
+            return conn.execute(sql, params).fetchone()["c"]
+
+    def realexam_gaps(self, exam_type: str = None) -> List[Dict]:
+        """溯源缺口审计：找出缺年份/卷内题号/分值的真题，避免漏标。"""
+        sql = ("SELECT id, exam_type, external_id, exam_year, paper, "
+               "q_no, points, kp_code FROM questions "
+               "WHERE is_real=1 AND (exam_year IS NULL OR q_no IS NULL "
+               "OR points IS NULL)")
+        params = []
+        if exam_type:
+            sql += " AND exam_type=?"
+            params.append(exam_type)
+        with self._get_conn() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        return [dict(r) for r in rows]
+
+    def realexam_by_year(self, exam_type: str = None) -> Dict[str, int]:
+        """真题按年份分布，快速对账各年是否都已入库。"""
+        sql = ("SELECT exam_year y, COUNT(*) c FROM questions "
+               "WHERE is_real=1 AND exam_year IS NOT NULL")
+        params = []
+        if exam_type:
+            sql += " AND exam_type=?"
+            params.append(exam_type)
+        sql += " GROUP BY exam_year ORDER BY y"
+        with self._get_conn() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        return {r["y"]: r["c"] for r in rows}

@@ -13,7 +13,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # 目标 schema 版本
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 # version -> 迁移函数
 _MIGRATIONS: dict = {}

@@ -24,7 +24,12 @@
           ],
           "answer": "C",
           "explanation": "Using x = ½at² and a = v/t = 20/5 = 4 m/s², x = ½×4×25 = 50 m.",
-          "source_ref": "pb-d1-001"
+          "source_ref": "pb-d1-001",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP01-Q02",
@@ -42,7 +47,12 @@
           ],
           "answer": "B",
           "explanation": "v_y = v·sin30° = 40×0.5 = 20 m/s. h = v_y²/(2g) = 400/20 = 20 m.",
-          "source_ref": "pb-d1-010"
+          "source_ref": "pb-d1-010",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP01-Q03",
@@ -60,7 +70,12 @@
           ],
           "answer": "B",
           "explanation": "y = v₀t - ½gt² = 30×4 - ½×10×16 = 120 - 80 = 40 m upward.",
-          "source_ref": "pb-d1-011"
+          "source_ref": "pb-d1-011",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -87,7 +102,12 @@
           ],
           "answer": "A",
           "explanation": "Pythagorean theorem: √(6²+8²) = √(36+64) = 10 N.",
-          "source_ref": "pb-d1-002"
+          "source_ref": "pb-d1-002",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP02-Q02",
@@ -105,7 +125,12 @@
           ],
           "answer": "D",
           "explanation": "F = ma = 4×3 = 12 N.",
-          "source_ref": "pb-d1-012"
+          "source_ref": "pb-d1-012",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -132,7 +157,12 @@
           ],
           "answer": "C",
           "explanation": "W = mgh = 3 × 10 × 4 = 120 J.",
-          "source_ref": "pb-d1-003"
+          "source_ref": "pb-d1-003",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP03-Q02",
@@ -150,7 +180,12 @@
           ],
           "answer": "B",
           "explanation": "Initial KE = ½×2×25 = 25 J. After: v' = mv/(2m) = 2.5 m/s, KE' = ½×4×6.25 = 12.5 J. Lost = 25-12.5 = 12.5 J.",
-          "source_ref": "pb-d1-013"
+          "source_ref": "pb-d1-013",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -177,7 +212,12 @@
           ],
           "answer": "A",
           "explanation": "F = GMm/R². If M doubles, F doubles.",
-          "source_ref": "pb-d1-014"
+          "source_ref": "pb-d1-014",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -204,7 +244,12 @@
           ],
           "answer": "C",
           "explanation": "f = 20/10 = 2 Hz.",
-          "source_ref": "pb-d1-015"
+          "source_ref": "pb-d1-015",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -231,7 +276,12 @@
           ],
           "answer": "B",
           "explanation": "Sound travels as longitudinal (compression) waves.",
-          "source_ref": "pb-d1-016"
+          "source_ref": "pb-d1-016",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP09-Q02",
@@ -249,7 +299,12 @@
           ],
           "answer": "C",
           "explanation": "v = fλ = 2×1.5 = 3 m/s.",
-          "source_ref": "pb-d1-020"
+          "source_ref": "pb-d1-020",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP09-Q03",
@@ -267,7 +322,12 @@
           ],
           "answer": "C",
           "explanation": "Second harmonic = 2× fundamental = 2×100 = 200 Hz.",
-          "source_ref": "pb-d1-023"
+          "source_ref": "pb-d1-023",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -294,7 +354,12 @@
           ],
           "answer": "C",
           "explanation": "Using mirror equation 1/f = 1/do + 1/di: 1/10 = 1/20 + 1/di → 1/di = 1/20, di = 20 cm in front (real).",
-          "source_ref": "pb-d1-006"
+          "source_ref": "pb-d1-006",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP10-Q02",
@@ -312,7 +377,12 @@
           ],
           "answer": "A",
           "explanation": "Snell's law: n₁sinθ₁ = n₂sinθ₂ → sinθ₂ = (1.0×sin30°)/1.5 = 0.5/1.5 = 0.333 → θ₂ ≈ 19.5°.",
-          "source_ref": "pb-d1-017"
+          "source_ref": "pb-d1-017",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -339,7 +409,12 @@
           ],
           "answer": "C",
           "explanation": "For adiabatic process: P₁V₁^γ = P₂V₂^γ, P₂ = P₁(V₁/V₂)^γ = 1×(4/2)^1.4 = 2^1.4 ≈ 2.64 atm.",
-          "source_ref": "pb-d1-007"
+          "source_ref": "pb-d1-007",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP11-Q02",
@@ -357,7 +432,12 @@
           ],
           "answer": "B",
           "explanation": "Q = mcΔT = 2×4200×50 = 420,000 J = 420 kJ.",
-          "source_ref": "pb-d1-022"
+          "source_ref": "pb-d1-022",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -384,7 +464,12 @@
           ],
           "answer": "D",
           "explanation": "Pascal's principle: F₂ = F₁(A₂/A₁) = 100 × (1/0.01) = 10000 N.",
-          "source_ref": "pb-d1-004"
+          "source_ref": "pb-d1-004",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -411,7 +496,12 @@
           ],
           "answer": "B",
           "explanation": "Ohm's law: I = V/R = 12/4 = 3 A.",
-          "source_ref": "pb-d1-005"
+          "source_ref": "pb-d1-005",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -438,7 +528,12 @@
           ],
           "answer": "A",
           "explanation": "F = qE = 4×10⁻⁶ × 500 = 2×10⁻³ = 0.002 N.",
-          "source_ref": "pb-d1-018"
+          "source_ref": "pb-d1-018",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -465,7 +560,12 @@
           ],
           "answer": "C",
           "explanation": "F = BIL = 0.2 × 5 × 2 = 2 N.",
-          "source_ref": "pb-d1-008"
+          "source_ref": "pb-d1-008",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP15-Q02",
@@ -483,7 +583,12 @@
           ],
           "answer": "C",
           "explanation": "ε = -NΔΦ/Δt = -200×(0.01-0.05)/0.1 = -200×(-0.04)/0.1 = 80 V.",
-          "source_ref": "pb-d1-019"
+          "source_ref": "pb-d1-019",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     },
@@ -510,7 +615,12 @@
           ],
           "answer": "B",
           "explanation": "After 3 half-lives (30/10=3): 100 × (½)³ = 100/8 = 12.5 g.",
-          "source_ref": "pb-d1-009"
+          "source_ref": "pb-d1-009",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         },
         {
           "qid": "PB-KP16-Q02",
@@ -528,7 +638,12 @@
           ],
           "answer": "A",
           "explanation": "ΔE = E₃-E₂ = -13.6/9 - (-13.6/4) = -1.51 - (-3.4) = 1.89 eV.",
-          "source_ref": "pb-d1-021"
+          "source_ref": "pb-d1-021",
+          "is_real": 0,
+          "exam_year": null,
+          "paper": "",
+          "q_no": null,
+          "points": null
         }
       ]
     }

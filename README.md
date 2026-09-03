@@ -325,3 +325,54 @@ collectors:
 ```bash
 pytest tests/ -v
 ```
+
+---
+
+## 🎯 V3：真题(real-exam)溯源 + 三种下载产物（新增）
+
+把 **真实考试真题（2010 起）** 与练习题分开管理，按知识点归并并**逐题溯源标记**。
+
+### 真题溯源字段
+每条真题记录（`data/realexam/{exam}.json`）带 5 个溯源字段，入库与渲染全链路保留：
+
+| 字段 | 含义 | 示例 |
+|------|------|------|
+| `is_real` | 是否真题 | `1` |
+| `exam_year` | 年份 | `2018` |
+| `paper` | 哪卷/哪套 | `卷B` |
+| `q_no` | 卷内第几题 | `3` |
+| `points` | 分值 | `6` |
+
+渲染时逐题标注：`【真题｜2018 · 卷B · 第3题 · 6分】`，题目卷隐藏答案。
+
+### 真题导入 + 对账（保证"全量不漏"）
+```bash
+python scripts/import_realexam.py                  # 导入全部真题到库
+python scripts/import_realexam.py --exam ap_physics_1 --check   # 仅校验溯源
+```
+- 入库自动登记 `realexam_imports`，可对账批次。
+- `GET /api/realexam/stats` 返回 `count / by_year / gaps / imports`：
+  `gaps` 列出**缺年份/题号/分值**的真题，`by_year` 按年份分布，据此核对各年真题是否都已入库不漏。
+- 真题文件格式见 `data/realexam/README.md`。
+
+### 三种下载产物（题 only / 答案 only / 题+答案）
+把题目库按知识点导出为可单独下载的三份 Markdown：
+
+```bash
+python scripts/export_papers.py                         # 导出全部考试
+python scripts/export_papers.py --exam ap_physics_1 --outdir data/download
+```
+
+每知识点生成：
+- `..._题目卷.md` → **只下载题目**（隐藏答案）
+- `..._答案卡.md` → **只下载答案**（含解析，无题干）
+- `..._含答案.md` → **题目+答案** 全卷
+
+API：
+```http
+POST /api/download                      # 触发导出（body: {"exam_type":"ap_physics_1"}）
+GET  /api/download/content?exam_type=ap_physics_1&kp_code=KP01&kind=题目卷   # 读某卷(题目卷/答案卡/含答案)
+```
+
+> 真题内容以官方发布/授权转写为准。`data/realexam/` 供按上述格式持续投喂，
+> 系统保证每年每卷每题都被溯源标记并入专项卷，且可用对账接口查漏，不漏不错。
