@@ -130,3 +130,18 @@ docs/architecture/               # 本文档
 | 团队 | [team/team_scaling](../team/team_scaling.md) | 团队规模 / RACI / 里程碑排期 |
 
 > 蓝图用于**经理按模块安排开发**、架构总师把关。
+
+---
+
+## NPC 协作 / 子组织适配（Issue #2）
+
+> 子组织（subgroup）环境下 `@` 自动补全 / star / 互相 @ 协作失效的适配方案。
+> 根因：两级 `@org/repo` 命名空间模型装不下 `org/subgroup/repo` 三级仓库路径。
+
+| 文档 | 说明 |
+|------|------|
+| [npc/README](../npc/README.md) | NPC 子组织协作适配目录入口 |
+| [npc/subgroup_@_adaptation.md](../npc/subgroup_@_adaptation.md) | 根因诊断 + 适配方案 |
+| [npc/resolver.subgroup.patched.py](../npc/resolver.subgroup.patched.py) | resolver 三级路径修复补丁（交接 `dongjiagoushi` 合入） |
+| [npc/settings.subgroup.example.yml](../npc/settings.subgroup.example.yml) | 子组织仓库 NPC 团队角色声明骨架 |
+| [npc/selftest_subgroup.sh](../npc/selftest_subgroup.sh) | 解析器自检脚本 |
