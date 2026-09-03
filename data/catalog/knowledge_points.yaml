@@ -1,0 +1,110 @@
+# 统一知识点目录（跨考试归并，作为"知识点↔题 一一对应"的枢纽）
+# kp_code 稳定，不得改名；aliases 用于把原始 topic 归一到 kp_code
+modules:
+  力学:
+    code: MECH
+  波与光:
+    code: WAV
+  热与流体:
+    code: THERMO
+  电磁:
+    code: ELEM
+  近代:
+    code: MODERN
+
+knowledge_points:
+  - kp_code: KP01
+    kp_name: 运动学
+    kp_name_en: Kinematics
+    module: 力学
+    aliases: [kinematics, projectile_motion]
+
+  - kp_code: KP02
+    kp_name: 牛顿动力学
+    kp_name_en: Newtonian Dynamics
+    module: 力学
+    aliases: [dynamics, force_newton]
+
+  - kp_code: KP03
+    kp_name: 功、能与功率
+    kp_name_en: Work Energy and Power
+    module: 力学
+    aliases: [work_energy, energy, power]
+
+  - kp_code: KP04
+    kp_name: 动量与冲量
+    kp_name_en: Momentum and Impulse
+    module: 力学
+    aliases: [momentum, impulse_momentum]
+
+  - kp_code: KP05
+    kp_name: 引力
+    kp_name_en: Gravitation
+    module: 力学
+    aliases: [gravity, gravitation]
+
+  - kp_code: KP06
+    kp_name: 圆周运动
+    kp_name_en: Circular Motion
+    module: 力学
+    aliases: [circular_motion]
+
+  - kp_code: KP07
+    kp_name: 简谐运动
+    kp_name_en: Simple Harmonic Motion
+    module: 力学
+    aliases: [simple_harmonic_motion]
+
+  - kp_code: KP08
+    kp_name: 转动
+    kp_name_en: Rotation
+    module: 力学
+    aliases: [rotation]
+
+  - kp_code: KP09
+    kp_name: 波与声
+    kp_name_en: Waves and Sound
+    module: 波与光
+    aliases: [waves, sound]
+
+  - kp_code: KP10
+    kp_name: 光与波动光学
+    kp_name_en: Optics
+    module: 波与光
+    aliases: [optics, waves_optics]
+
+  - kp_code: KP11
+    kp_name: 热学与热力学
+    kp_name_en: Thermal Physics
+    module: 热与流体
+    aliases: [thermodynamics, thermal_energy]
+
+  - kp_code: KP12
+    kp_name: 流体力学
+    kp_name_en: Fluid Mechanics
+    module: 热与流体
+    aliases: [fluid_mechanics]
+
+  - kp_code: KP13
+    kp_name: 电路与电学
+    kp_name_en: Circuits and Electricity
+    module: 电磁
+    aliases: [circuits, electricity]
+
+  - kp_code: KP14
+    kp_name: 电场与电场力
+    kp_name_en: Electric Field and Force
+    module: 电磁
+    aliases: [electric_forces, electric_fields]
+
+  - kp_code: KP15
+    kp_name: 磁与电磁感应
+    kp_name_en: Magnetism and Induction
+    module: 电磁
+    aliases: [magnetism, induction]
+
+  - kp_code: KP16
+    kp_name: 近代与原子物理
+    kp_name_en: Modern and Atomic Physics
+    module: 近代
+    aliases: [modern_physics, atomic_physics]

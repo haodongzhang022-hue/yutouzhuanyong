@@ -10,6 +10,19 @@
 - 🌐 **在线 API**：提供 REST API，随时在线获取题目进行练习
 - 🎯 **专项练习**：区分 AP Physics 1 与 Physics Bowl D1 两个考试体系
 
+## 专项练习卷组织（新增）
+
+默认抓取入库的 JSON 是**机器可读的一维记录**，适合程序消费，但不够像人看的试卷。
+本项目在原有采集/API 基础上新增 **「知识点专项练习卷」组织层**：把每道题按知识点归组，
+渲染成**像学生试卷那样逐题排版**的 Markdown，方便直接刷题。
+
+- 🎯 每个知识点 = 一份**专项练习卷**（如「运动学专项练习」）
+- 🧾 每题隐藏答案的**题目卷** + 单独**解析卷**，作答与复盘分离
+- 🧭 按 **知识点 / 题型(mc·fr) / 难度** 三维索引，AI 或系统可任意组合检索
+- 🗂️ 统一知识点目录 `data/catalog/knowledge_points.yaml`，完成 topic → 知识点码归并
+
+> 📄 组织层设计文档见 `docs/architecture/`；一键生成命令见下方「生成专项练习卷」。
+
 ## 快速开始
 
 ### 安装依赖
@@ -22,6 +35,29 @@ pip install -r requirements.txt
 
 ```bash
 python scripts/fetch_once.py
+```
+
+### 生成专项练习卷（按知识点组织成试卷）
+
+把内置题库按**知识点**渲染成人类可读的专项练习卷（Markdown），
+输出到 `data/papers/`（含每知识点题目卷 + 解析卷 + `INDEX.md` 目录 + `ai_index.json`）：
+
+```bash
+# 组织全部考试
+python scripts/organize_bank.py
+
+# 只处理指定考试 / 指定输出目录
+python scripts/organize_bank.py --exam ap_physics_1
+python scripts/organize_bank.py --outdir data/papers
+```
+
+产物示例：
+```
+data/papers/ap_physics_1/
+  INDEX.md                                  # 专项练习目录（人浏览入口）
+  ap_physics_1_KP01_Kinematics.md           # 运动学·题目卷（隐藏答案）
+  ap_physics_1_KP01_Kinematics.answer.md    # 运动学·解析卷
+  ai_index.json                             # 结构化索引（AI 按类型检索）
 ```
 
 ### 启动在线 API 服务
@@ -172,9 +208,14 @@ collectors:
 ```
 ├── config/settings.yaml       # 系统配置
 ├── data/
-│   ├── builtin/              # 内置题库
-│   │   ├── ap_physics_1.json    # AP Physics 1 题库
-│   │   └── physics_bowl_d1.json # Physics Bowl D1 题库
+│   ├── builtin/              # 内置题库（采集原始数据）
+│   │   ├── ap_physics_1.json
+│   │   └── physics_bowl_d1.json
+│   ├── catalog/              # 知识点目录（topic→kp 归并）
+│   │   └── knowledge_points.yaml
+│   ├── papers/               # ★ 生成的人读专项练习卷
+│   │   ├── ap_physics_1/
+│   │   └── physics_bowl_d1/
 │   └── physics_bank.db       # SQLite 数据库（运行时生成）
 ├── src/
 │   ├── __init__.py
@@ -190,11 +231,17 @@ collectors:
 │   ├── models/
 │   │   ├── database.py       #   SQLite 数据库操作
 │   │   └── question.py       #   题目数据模型
+│   ├── organization/        # ★ 题库组织层（新增：平铺JSON → 专项卷）
+│   │   ├── kp_catalog.py         #  知识点目录加载与 topic→kp 归并
+│   │   ├── question_normalizer.py#  题号/题型/topic 规范化
+│   │   ├── topic_index.py        #  知识点↔题↔难度 双向索引
+│   │   └── paper_renderer.py     #  题目 → 专项练习卷 Markdown 渲染
 │   └── services/
 │       ├── fetch_service.py  #  抓取编排服务
 │       └── scheduler.py      #  每日定时调度
 ├── scripts/
-│   └── fetch_once.py         # 手动单次抓取
+│   ├── fetch_once.py         # 手动单次抓取
+│   └── organize_bank.py      # ★ 一键生成知识点专项练习卷
 ├── tests/                    # 测试用例
 ├── run.sh                    # 快捷启动脚本
 ├── Dockerfile                # 容器部署
