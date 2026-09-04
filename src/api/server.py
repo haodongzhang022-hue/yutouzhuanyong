@@ -324,12 +324,23 @@ def create_app(db: Database = None, fetch_service: FetchService = None,
         exam = _normalize_exam_type(request.args.get('exam_type', '')) or None
         yf = request.args.get('year_from', type=int)
         yt = request.args.get('year_to', type=int)
+        from src.services import realexam_manifest as rm
+        # no-miss 对账：逐考试列出 齐/缺（保证"真题一个不漏"）
+        exams_to_audit = [exam] if exam else None
+        cov_by_exam = {}
+        manifest = rm._load_manifest()
+        targets = exams_to_audit or list((manifest.get("exams") or {}).keys())
+        for et in targets:
+            cov_by_exam[et] = db.realexam_paper_coverage(et)
+        audit = (rm.audit_realexam(exam, cov_by_exam[exam])
+                 if exam else rm.audit_all(cov_by_exam))
         return jsonify({"code": 0, "data": {
             "count": db.count_realexam(exam_type=exam,
                                        year_from=yf, year_to=yt),
             "by_year": db.realexam_by_year(exam_type=exam),
             "gaps": db.realexam_gaps(exam_type=exam),
             "imports": db.latest_realexam_imports(exam_type=exam),
+            "no_miss_audit": audit,
         }})
 
     @app.route('/api/realexam/imports', methods=['GET'])

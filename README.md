@@ -376,3 +376,18 @@ GET  /api/download/content?exam_type=ap_physics_1&kp_code=KP01&kind=题目卷   
 
 > 真题内容以官方发布/授权转写为准。`data/realexam/` 供按上述格式持续投喂，
 > 系统保证每年每卷每题都被溯源标记并入专项卷，且可用对账接口查漏，不漏不错。
+
+### no-miss 全量清单 + 持续同步（V3.1，真题"一个不漏"）
+
+开考年口径纠偏：**AP Physics 1 自 2015 首考**（2010-2014 对应前身 AP Physics B）；
+Physics Bowl D1 自 2010 起逐年。`data/realexam/manifest.yaml` 据此登记每类考试
+历年应有试卷清单。
+
+- `python scripts/realexam_sync_check.py` → 把 `data/realexam/` 新增真题**幂等同步入库
+  + 重建专项卷**，再按清单**逐卷对账**，报告缺哪些年份/卷（`missing=[]` 即全量齐全）。
+- `python scripts/check_realexam.py` → 仅对账不改库。
+- 每日定时任务已自动执行真题同步（"持续获取"闭环）。
+- `GET /api/realexam/stats` 现返回 `no_miss_audit`，可在线查"漏不缺"。
+
+> 真实真题原文版权属出题机构（College Board / AAPT）。系统不自造真题内容，只对
+> 官方公布/授权转写的数据做幂等录入、溯源与不漏对账。

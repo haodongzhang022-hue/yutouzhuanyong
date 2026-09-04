@@ -506,3 +506,25 @@ class Database:
         with self._get_conn() as conn:
             rows = conn.execute(sql, params).fetchall()
         return {r["y"]: r["c"] for r in rows}
+
+    def realexam_paper_coverage(self, exam_type: str = None
+                                ) -> Dict[tuple, Dict]:
+        """真题按 (年份, 卷/套) 覆盖情况，供 no-miss 对账引擎使用。
+
+        返回 {(exam_year, paper): {"count": n, "papers_ok": bool, ...}}，
+        paper 为空串的记录归到 paper=''（用于套卷标识未填写时的提示）。
+        """
+        sql = ("SELECT exam_year y, paper p, COUNT(*) c "
+               "FROM questions WHERE is_real=1 AND exam_year IS NOT NULL")
+        params = []
+        if exam_type:
+            sql += " AND exam_type=?"
+            params.append(exam_type)
+        sql += " GROUP BY exam_year, paper ORDER BY y"
+        with self._get_conn() as conn:
+            rows = conn.execute(sql, params).fetchall()
+        out: Dict[tuple, Dict] = {}
+        for r in rows:
+            p = r["p"] or ""
+            out[(r["y"], p)] = {"count": r["c"], "year": r["y"], "paper": p}
+        return out

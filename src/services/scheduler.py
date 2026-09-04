@@ -34,18 +34,27 @@ class DailyScheduler:
                                    'daily_fetch_count': 5}
 
     def _daily_task(self):
-        """每日抓取任务回调"""
+        """每日抓取任务回调（练习采集 + 真题持续同步）"""
         today = date.today().isoformat()
-        logger.info("开始每日定时抓取任务: %s", today)
+        logger.info("开始每日定时任务: %s", today)
+        # 1) 练习：多源持续采集同类型题
         try:
             results = self.fetch_service.fetch_daily()
             for exam_type, result in results.items():
-                logger.info("[%s] 抓取 %s 道，新增 %s 道",
+                logger.info("[%s] 练习抓取 %s 道，新增 %s 道",
                             exam_type, result.get('total_fetched', 0),
                             result.get('new', 0))
-            logger.info("每日抓取完成")
         except Exception as e:
-            logger.error("每日抓取任务异常: %s", e)
+            logger.error("每日练习抓取异常: %s", e)
+        # 2) 真题：把 data/realexam/ 新增的授权真题幂等同步入库+重建
+        try:
+            from src.services.realexam_sync import sync_all
+            report = sync_all(db=self.db)
+            for exam, r in report["synced"].items():
+                logger.info("[%s] 真题同步源 %s 条，新增 %s 条",
+                            exam, r.get("source_total", 0), r.get("new", 0))
+        except Exception as e:
+            logger.error("每日真题同步异常: %s", e)
 
     def start(self):
         """启动调度器"""

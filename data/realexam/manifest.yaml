@@ -1,0 +1,31 @@
+# =====================================================================
+# 真题全量清单(no-miss manifest) —— 每类考试历年应有哪些真实试卷。
+# 用途：对账引擎据此比对题库里已入的真题，逐卷/逐年报"齐/缺"，保证"一个不漏"。
+#
+# 关键事实(避免按用户口误全采2010)：
+#   * AP Physics 1  自 2015 年 5 月首次开考(取代 AP Physics B)。
+#     故"2010起"对 AP1 不成立：2010-2014 对应的是前身 AP Physics B。
+#     → start_year 从 2015 起；如需把前身 B 卷一并收录，另加 ap_physics_b 考试。
+#   * Physics Bowl Division 1 逐年举办，2010 起均有。
+#
+# papers：每套卷的标识。题库里真题记录的 paper 字段取值应与之对齐，
+# 以便对账时把"该年该卷"能一一对上。无固定套卷时可用 ["单卷"]。
+# =====================================================================
+exams:
+  ap_physics_1:
+    display: "AP Physics 1"
+    start_year: 2015          # 官方首考年(AP1 2015 前不存在)
+    note: "AP Physics 1 自2015年首考，取代 AP Physics B；MC 非公开，FR 每年官方公布。"
+    papers:                  # 每年应包含的卷/套标识
+      - "FR"
+    expect_forms:            # 期望每年存在的题型记录(用于缺口提示)
+      - "free_response"
+
+  physics_bowl_d1:
+    display: "Physics Bowl Division 1"
+    start_year: 2010          # 用户口径"2010起"：Physics Bowl 逐年举办
+    note: "Physics Bowl Division 1 面向<1年物理课程学生；分区域/全国等套卷。"
+    papers:
+      - "区域卷"
+      - "全国卷"
+    expect_forms: []
